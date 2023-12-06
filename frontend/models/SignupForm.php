@@ -24,7 +24,11 @@ class SignupForm extends Model
         return [
             ['username', 'trim'],
             ['username', 'required'],
-            ['username', 'match', 'pattern' => '/^[a-zA-Z]+$/', 'message' => 'Input invalid. Only alphabetical characters (a-z, A-Z) are allowed.'],
+            [
+                'username', 
+                'match', 'pattern' => '/^[a-zA-Z0-9]+$/', 
+                'message' => 'Input invalid. Only alphanumeric characters (a-z, A-Z, 0-9) are allowed.'
+            ],
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 5, 'max' => 255],
 
@@ -32,11 +36,19 @@ class SignupForm extends Model
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            [
+                'email', 
+                'unique', 'targetClass' => '\common\models\User', 
+                'message' => 'This email address has already been taken.'
+            ],
 
             ['password', 'required'],
             // ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
-            ['password', 'match', 'pattern' => '/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', 'message' => 'password must contain at least one alphabetical character, one digit, one special character, and be at least 8 characters long.'],
+            [
+                'password', 
+                'match', 'pattern' => '/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', 
+                'message' => 'password must contain at least one alphabetical character, one digit, one special character, and be at least 8 characters long.'
+            ],
         ];
     }
 

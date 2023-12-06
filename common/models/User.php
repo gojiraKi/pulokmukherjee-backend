@@ -83,6 +83,11 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
+        $user = static::findOne(['username' => $username, 'status' => self::STATUS_INACTIVE]);
+        if ($user !== null) {
+            Yii::$app->session->setFlash('error', 'Account not yet verified.');
+            return false;
+        }
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 

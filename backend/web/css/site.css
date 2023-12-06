@@ -1,3 +1,9 @@
+body {
+    background-color: #eee;
+    color: #3c4858;
+    font-weight: 300;
+}
+
 main > .container {
     padding: 70px 15px 20px;
 }
@@ -87,4 +93,24 @@ a.desc:after {
 
 .nav > li > form > button.logout:focus {
     outline: none;
+}
+
+/* custom css from here */
+.side-menu ul {
+	list-style-type: none;
+	font-size: 13pt;
+	margin: 0;
+	padding: 14px 0;
+	overflow: hidden;
+}
+
+.side-menu li {
+	margin-bottom: 5px;
+}
+
+.side-menu li a {
+	display: block;
+	padding: 10px;
+	text-decoration: none;
+	color: #616A6B;
 }

@@ -9,6 +9,7 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 ?>
@@ -21,6 +22,7 @@ AppAsset::register($this);
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
@@ -58,15 +60,38 @@ AppAsset::register($this);
     ?>
 </header>
 
-<main role="main" class="flex-shrink-0">
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+<div class="row">
+    <div class="col-lg-2">
+        <div class="side-menu border-end mt-5">
+            <ul>
+                <li>
+                <a id="about" href="<?= Url::toRoute(['pages/view', 'id' => 'about']) ?>">Overview</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                <a id="about" href="<?= Url::toRoute(['about/index']) ?>">About</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                <a id="mission" href="<?= Url::toRoute(['pages/view', 'id' => 'mission']) ?>">Mission</a>
+                </li>
+                <li class="divider"></li>
+            </ul>
+        </div>
     </div>
-</main>
+    <div class="col-lg-10">
+    <main role="main" class="flex-shrink-0">
+        <div class="container">
+            <?= Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                'options' => ['class' => 'p-2 bg-light border rounded shadow-sm']
+            ]) ?>
+            <?= Alert::widget() ?>
+            <?= $content ?>
+        </div>
+    </main>
+    </div>
+</div>
 
 <footer class="footer mt-auto py-3 text-muted">
     <div class="container">
