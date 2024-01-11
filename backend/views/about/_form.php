@@ -38,7 +38,7 @@ use kartik\editors\Summernote;
                     //'browseClass' => 'btn btn-primary btn-block',
                     'browseIcon' => '<i class="fas fa-camera"></i> ',
                     'browseLabel' =>  'Select Photo',
-                    'maxFileSize' => 256
+                    // 'maxFileSize' => 256
                 ],
             ])->label(false); ?>
             </div>

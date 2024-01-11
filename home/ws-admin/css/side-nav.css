@@ -1,0 +1,148 @@
+#mySidenav {
+	width: 250px;
+}
+
+.box {
+	padding-left: 250px;
+	transition: 0.5s;
+}
+
+/* The side navigation menu */
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 10000; /* Stay on top */
+    /* top: 25px; */
+    left: 0;
+    background-color: #343a40;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+.container {
+	//transition: 0.5s;
+}
+
+.navbar > .container {
+	width: 100% !important;
+}
+
+@media screen and (min-width: 1400px) {
+	.container {
+		//width: 1600px;
+	}
+}
+
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #aaa;
+    display: block;
+    transition: 0.3s
+}
+
+#user {
+	padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #aaa;
+    display: block;
+    transition: 0.3s
+}
+
+#home {
+	margin-top: -10px;
+}
+
+.userBox {
+	height: 120px;
+	color: #fff;
+	font-size: 16px;
+}
+
+.sidenav li {
+    padding: 2px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #aaa;
+    display: block;
+    transition: 0.3s
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.sidenav .userPI {
+	position: absolute;
+    top: 15px;
+    left: 10px;
+	height: 200px;
+	//padding-left: 20px;
+   // font-size: 36px;
+    //margin-left: 50px;
+}
+
+.sidenav a {
+	//font-size: 16px;
+	color: #fff;
+}
+
+#overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0, 0.9);
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.menu {
+	cursor:pointer;
+	position:fixed;
+	z-index: 5000;
+	top:25px;
+	left:12px;
+	background-color:rgba(0, 0, 0, 0.7);
+	border-radius: 2px;
+	padding: 0 3px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+.navbar-collapse {
+    max-height: auto;
+}
+
+.navbar-nav {
+    flex-direction: column !important;
+}
+
+.navbar-nav > li {
+    float: none;
+}

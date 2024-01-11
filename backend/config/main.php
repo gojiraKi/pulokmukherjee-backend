@@ -13,7 +13,7 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'aliases' => [
-        '@front' => '/pkmukherjee/frontend/web',
+        '@front' => '/pkmukherjee/frontend/web/',
     ],
     'components' => [
         'request' => [

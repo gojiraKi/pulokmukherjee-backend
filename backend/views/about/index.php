@@ -17,32 +17,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create About', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="card p-2 shadow-sm col-6 mx-auto text-center">
+        <p class="display-1">
+            Hi!
+        </p>
+        <p class="display-4">
+            Create a new bio here!
+        </p>
+        <p>
+        <?= Html::a('Create Bio', ['create'], ['class' => 'btn btn-success col-6 mx-auto mt-4']) ?>
+        </p>
+    </div>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'bio_photo',
-            'article:ntext',
-            'created_by',
-            'created_on',
-            //'updated_by',
-            //'updated_on',
-            //'created',
-            [
-                'class' => ActionColumn::class,
-                'urlCreator' => function ($action, About $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
 
 
 </div>

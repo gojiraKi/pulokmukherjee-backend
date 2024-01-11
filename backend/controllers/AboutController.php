@@ -45,16 +45,10 @@ class AboutController extends Controller
         // only one about us is required so redirecting to view
         $model = About::findOne(['created' => 1]);
         if ($model !== null) {
-            return $this->view($model->id);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        $searchModel = new AboutSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        return $this->render('index');
     }
 
     /**
@@ -87,10 +81,23 @@ class AboutController extends Controller
 					$ext = (explode(".", $name));
 					$ext = end($ext);
 					$fileName = Yii::$app->security->generateRandomString(12);
+
+                    $temp = explode("/", Yii::getAlias('@webroot'));
+                    $length = count($temp);
+
+                    $one = Yii::getAlias('@webroot');
+                    $two = Yii::getAlias('@web');
+                    $three = Yii::getAlias('@yii');
+                    $four = Yii::getAlias('@app');
+
+                    $path = "";
+                    for ($i = 0; $i < $length - 2; $i++) {
+                        $path = $path . $temp[$i] . '/';
+                    }
 					
 					/* required for saving physical file in hard disk */
-					$pathFolder = 'uploads/';
-					$pathDoc = Yii::getAlias('@front/') . $pathFolder;
+					$pathFolder = 'frontend/web/uploads/';
+					$pathDoc = $path . $pathFolder;
 				
 					// create the folder if it doesn't exist else return false if the folder already exist
 					FileHelper::createDirectory($pathDoc);
@@ -99,7 +106,8 @@ class AboutController extends Controller
 					$image->saveAs($pathDoc . $fileName . ".{$ext}");
 					
 					// save the path in db column 
-					$model->imageFile = Yii::getAlias('@front/') . $pathFolder . $fileName . ".{$ext}";
+					// $model->bio_photo = Yii::getAlias('@frontend/') . $pathFolder . $fileName . ".{$ext}";
+					$model->bio_photo = Yii::getAlias('@front') . '/' . $pathFolder . $fileName . ".{$ext}";
 					
 					$model->save(false);
 				}
@@ -108,7 +116,7 @@ class AboutController extends Controller
                 date_default_timezone_set('Asia/Kolkata');
                 $model->created_on = time();
                 $model->created = 1;
-                $model->save();
+                $model->save(false);
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
