@@ -31,6 +31,13 @@ return [
                 ],
             ],
         ],
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=pulok_mukherjee_db',
+            'username' => 'root',
+            'password' => '12345678',
+            'charset' => 'utf8',
+        ],
     ],
     'params' => $params,
 ];

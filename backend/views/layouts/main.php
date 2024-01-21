@@ -62,7 +62,7 @@ AppAsset::register($this);
 
 <div class="row">
     <div class="col-lg-2">
-        <div class="side-menu border-end mt-5">
+        <div class="side-menu border-end mt-5 h-100">
             <ul>
                 <li>
                 <a id="about" href="<?= Url::toRoute(['pages/view', 'id' => 'about']) ?>">Overview</a>
@@ -74,6 +74,9 @@ AppAsset::register($this);
                 <li class="divider"></li>
                 <li>
                 <a id="mission" href="<?= Url::toRoute(['pages/view', 'id' => 'mission']) ?>">Mission</a>
+                </li>
+                <li class="divider"></li>
+                <a id="mission" href="<?= Url::toRoute(['outreach-programme/index']) ?>">Outreach Programme</a>
                 </li>
                 <li class="divider"></li>
             </ul>

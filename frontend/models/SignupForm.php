@@ -5,6 +5,8 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 use common\models\User;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 /**
  * Signup form
@@ -14,6 +16,7 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+    public $confirm_password;
 
 
     /**
@@ -22,15 +25,15 @@ class SignupForm extends Model
     public function rules()
     {
         return [
-            ['username', 'trim'],
-            ['username', 'required'],
-            [
-                'username', 
-                'match', 'pattern' => '/^[a-zA-Z0-9]+$/', 
-                'message' => 'Input invalid. Only alphanumeric characters (a-z, A-Z, 0-9) are allowed.'
-            ],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
-            ['username', 'string', 'min' => 5, 'max' => 255],
+            // ['username', 'trim'],
+            // ['username', 'required'],
+            // [
+            //     'username', 
+            //     'match', 'pattern' => '/^[a-zA-Z0-9]+$/', 
+            //     'message' => 'Input invalid. Only alphanumeric characters (a-z, A-Z, 0-9) are allowed.'
+            // ],
+            // ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
+            // ['username', 'string', 'min' => 5, 'max' => 255],
 
             ['email', 'trim'],
             ['email', 'required'],
@@ -47,7 +50,15 @@ class SignupForm extends Model
             [
                 'password', 
                 'match', 'pattern' => '/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', 
-                'message' => 'password must contain at least one alphabetical character, one digit, one special character, and be at least 8 characters long.'
+                'message' => 'Password must contain at least one alphabetical character, one digit, one special character, and be at least 8 characters long.'
+            ],
+
+            ['confirm_password', 'required'],
+            ['confirm_password', 'string', 'min' => 8],
+            [
+                'confirm_password',
+                'compare', 'compareAttribute' => 'password',
+                'message' => 'Passwords do not match.'
             ],
         ];
     }
@@ -64,13 +75,13 @@ class SignupForm extends Model
         }
         
         $user = new User();
-        $user->username = $this->username;
+        $user->username = $this->email; // dumping email
         $user->email = $this->email;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        // sendEmail removed
+        // sendEmail commented
         // return $user->save() && $this->sendEmail($user);
         return $user->save();
     }
@@ -80,7 +91,7 @@ class SignupForm extends Model
      * @param User $user user model to with email should be send
      * @return bool whether the email was sent
      */
-    protected function sendEmail($user)
+    protected function sendEmailYii($user)
     {
         return Yii::$app
             ->mailer
@@ -92,5 +103,32 @@ class SignupForm extends Model
             ->setTo($this->email)
             ->setSubject('Account registration at ' . Yii::$app->name)
             ->send();
+    }
+
+    protected function sendEmail($user)
+    {
+        $mail = new PHPMailer(true);
+        $mail->isSendmail();
+
+        try {
+            //Set who the message is to be sent from
+            $mail->setFrom('no-reply@pulokmukherjee.com', 'pulokmukherjee.com');
+            //Set who the message is to be sent to
+            $mail->addAddress($this->email);
+            //Set the subject line
+            $mail->Subject = 'Account Verification Mail';
+            //Read an HTML message body from an external file, convert referenced images to embedded,
+            //convert HTML into a basic plain-text alternative body
+            // $mail->msgHTML(file_get_contents('contents.html'), __DIR__);
+            //Replace the plain text body with one created manually
+            $mail->isHTML(true);
+            $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            // echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            Yii::$app->session->setFlash('error', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+        }
     }
 }

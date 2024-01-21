@@ -32,6 +32,10 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'actions' => ['captcha'],
+                        'allow' => true,
+                    ],
                 ],
             ],
             'verbs' => [
@@ -51,6 +55,9 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => \yii\web\ErrorAction::class,
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
             ],
         ];
     }
