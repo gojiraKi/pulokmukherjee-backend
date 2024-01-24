@@ -2,10 +2,10 @@
 use yii\helpers\Url;
 
 return [
-    [
-        'class' => 'kartik\grid\CheckboxColumn',
-        'width' => '20px',
-    ],
+    // [
+    //     'class' => 'kartik\grid\CheckboxColumn',
+    //     'width' => '20px',
+    // ],
     [
         'class' => 'kartik\grid\SerialColumn',
         'width' => '30px',
@@ -18,10 +18,10 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'photo',
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'thmb_photo',
-    ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'thmb_photo',
+    // ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'caption',
@@ -30,10 +30,10 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'status',
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'remark_one',
-    ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'remark_one',
+    // ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'remark_two',

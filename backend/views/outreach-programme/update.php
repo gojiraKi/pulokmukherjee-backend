@@ -2,10 +2,17 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\OutreachProgramme */
+/** @var yii\web\View $this */
+/** @var app\models\OutreachProgramme $model */
+
+$this->title = 'Update Outreach Programme: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Outreach Programmes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="outreach-programme-update">
+
+    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

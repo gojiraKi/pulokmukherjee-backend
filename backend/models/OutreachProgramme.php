@@ -17,6 +17,8 @@ use Yii;
  */
 class OutreachProgramme extends \yii\db\ActiveRecord
 {
+    public $imageFile; // for uploading photo
+
     /**
      * {@inheritdoc}
      */
@@ -36,6 +38,10 @@ class OutreachProgramme extends \yii\db\ActiveRecord
             [['photo', 'thmb_photo', 'caption'], 'string', 'max' => 255],
             [['remark_one', 'remark_two'], 'string', 'max' => 45],
             [['id'], 'unique'],
+
+            [['imageFile'], 'safe'],
+            [['imageFile'], 'file', 'extensions' => 'jpg, jpeg, png', 'maxFiles' => 1],
+            [['imageFile'], 'file', 'maxSize' => '262144'],
         ];
     }
 
