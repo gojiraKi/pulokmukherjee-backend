@@ -29,8 +29,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
-            'photo',
+            // 'photo',
             // 'thmb_photo',
+            [
+                'class'=>'\kartik\grid\DataColumn',
+                'attribute'=>'photo',
+                'format' => 'raw',
+                'hAlign' => 'center',
+                'vAlign' => 'center',
+                'value' => function ($model) {
+                    $photo = Yii::getAlias('@front') . '/' .$model->thmb_photo;
+                    return '<div><img class="img-fluid" src="' . $photo .'"></div>';
+                }
+            ],
             'caption',
             'status',
             //'remark_one',

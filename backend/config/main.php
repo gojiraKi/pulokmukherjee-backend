@@ -14,7 +14,7 @@ return [
     'modules' => [
         'gridview' =>  [
             'class' => '\kartik\grid\Module',
-            'bsVersion' => '5.x',
+            'bsVersion' => '4.x',
             // enter optional module parameters below - only if you need to
             // use your own export download action or custom translation
             // message source
@@ -27,7 +27,7 @@ return [
         ],
     ],
     'aliases' => [
-        '@front' => '/pkmukherjee/frontend/web/',
+        '@front' => '/pkmukherjee/home/',
     ],
     'components' => [
         'request' => [

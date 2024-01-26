@@ -19,6 +19,9 @@ class OutreachProgramme extends \yii\db\ActiveRecord
 {
     public $imageFile; // for uploading photo
 
+    const INACTIVE = 9;
+    const ACTIVE = 10;
+
     /**
      * {@inheritdoc}
      */
@@ -42,6 +45,9 @@ class OutreachProgramme extends \yii\db\ActiveRecord
             [['imageFile'], 'safe'],
             [['imageFile'], 'file', 'extensions' => 'jpg, jpeg, png', 'maxFiles' => 1],
             [['imageFile'], 'file', 'maxSize' => '262144'],
+
+            ['status', 'default', 'value' => self::ACTIVE],
+            ['status', 'in', 'range' => [self::ACTIVE, self::INACTIVE]],
         ];
     }
 
@@ -56,8 +62,8 @@ class OutreachProgramme extends \yii\db\ActiveRecord
             'thmb_photo' => 'Thmb Photo',
             'caption' => 'Caption',
             'status' => 'Status',
-            'remark_one' => 'Remark One',
-            'remark_two' => 'Remark Two',
+            // 'remark_one' => 'Remark One',
+            // 'remark_two' => 'Remark Two',
         ];
     }
 }

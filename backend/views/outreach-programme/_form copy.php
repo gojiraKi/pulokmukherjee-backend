@@ -67,7 +67,7 @@ FontAwesomeAsset::register($this);
   
 <?php if (!Yii::$app->request->isAjax){ ?>
     <div class="form-group">
-        <?php // Html::submitButton($models->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?php  Html::submitButton($models->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 <?php } ?>
 

@@ -9,8 +9,6 @@ use app\models\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use \yii\web\Response;
-use yii\helpers\Html;
 use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
@@ -23,29 +21,32 @@ use Imagine\Image\Point;
 class OutreachProgrammeController extends Controller
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'delete' => ['post'],
-                    'bulkdelete' => ['post'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::class,
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
                 ],
-            ],
-        ];
+            ]
+        );
     }
 
     /**
      * Lists all OutreachProgramme models.
-     * @return mixed
+     *
+     * @return string
      */
     public function actionIndex()
     {
         $searchModel = new OutreachProgrammeSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -53,90 +54,70 @@ class OutreachProgrammeController extends Controller
         ]);
     }
 
-
     /**
      * Displays a single OutreachProgramme model.
-     * @param integer $id
-     * @return mixed
+     * @param int $id ID
+     * @return string
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $request = Yii::$app->request;
-        if($request->isAjax){
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return [
-                    'title'=> "OutreachProgramme #".$id,
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $this->findModel($id),
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];
-        }else{
-            return $this->render('view', [
-                'model' => $this->findModel($id),
-            ]);
-        }
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
     }
 
     /**
      * Creates a new OutreachProgramme model.
-     * For ajax request will return json object
-     * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $request = Yii::$app->request;
+        // $model = new OutreachProgramme();
         $models = [new OutreachProgramme()];
 
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-
-            if($request->isGet){
-                return [
-                    'title'=> "Create new OutreachProgramme",
-                    'content'=>$this->renderAjax('create', [
-                        'models' => $models,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-
-                ];
-            }else if($request->isPost){
-                $models = Model::createMultiple(OutreachProgramme::class);
-                foreach ($models as $model) {
-                    if ($model->load($request->post())) {
+        if ($this->request->isPost) {
+            // if ($model->load($this->request->post()) && $model->save()) {
+            //     return $this->redirect(['view', 'id' => $model->id]);
+            // }
+            $models = Model::createMultiple(OutreachProgramme::class);
+            Model::loadMultiple($models, Yii::$app->request->post());
+                foreach ($models as $i => $model) {
+                    if ($model->load($this->request->post())) {
                         /* upload photo */
-                        if ($image = UploadedFile::getInstance($model,'')) {
+                        if ($image = UploadedFile::getInstance($model,"[{$i}]imageFile")) {
                             $name = $image->name;
                             $ext = (explode(".", $name));
                             $ext = end($ext);
                             $random = Yii::$app->security->generateRandomString(12);
-                            $fileName = $model->registration_no . '-' . $random;
+                            $fileName = $random;
                             
                             $temp = explode("/", Yii::getAlias('@webroot'));
                             $length = count($temp);
-                            
-                            /* required for saving physical file in hard disk */
-                            $pathFolder = 'uploads/' . $model->transactionID . '/';
-                            $pathDoc = Yii::getAlias('@webroot/') . $pathFolder;
+
+                            // get the webroot path
+                            $path = "";
+                            for ($i = 0; $i < $length - 1; $i++) {
+                                $path = $path . $temp[$i] . '/';
+                            }
+
+                            // image folder subpath
+                            $folderPath = 'uploads/images';
+                            $pathDoc = $path . $folderPath;
                         
                             // create the folder if it doesn't exist else return false if the folder already exist
                             FileHelper::createDirectory($pathDoc);
                             
                             // save the image in storage e.g. hard disk
-                            $image->saveAs($pathDoc . $fileName . ".{$ext}");
+                            $image->saveAs($pathDoc . '/' . $fileName . ".{$ext}");
                             
                             /* for saving thumbnail */
-                            $save_photo = $pathDoc . $fileName . ".{$ext}";
-                            $save_path = Yii::getAlias('@webroot/') . 'uploads/images/thumbnails/';
+                            $save_photo = $pathDoc . '/' . $fileName . ".{$ext}";
+                            $save_path = $pathDoc . '/thumbnails/';
                             
                             // save the path in db column 
-                            $model->photo = Yii::getAlias('@web/') . $pathFolder . $fileName . ".{$ext}";
+                            $model->photo = $folderPath . '/' . $fileName . ".{$ext}";
                             
                             /* thumbnail */
                             $thumbnail = Image::thumbnail($save_photo, $img_size = 150, $img_size = 150);
@@ -145,12 +126,13 @@ class OutreachProgrammeController extends Controller
                                 $white = Image::getImagine()->create(new Box($img_size, $img_size));
                                 $thumbnail = $white->paste($thumbnail, new Point($img_size / 2 - $size->getWidth() / 2, $img_size / 2 - $size->getHeight() / 2));
                             }
+                            FileHelper::createDirectory($save_path);
                             /* save in hdd */
-                            $thumbnail->save($save_path . $fileName . "thm" . ".{$ext}", ['quality' => 90]);
+                            $thumbnail->save($save_path . '/' .  $fileName . "thm" . ".{$ext}", ['quality' => 90]);
                             /* save in db */
-                            $model->remark_two = Yii::getAlias('@web/uploads/images/thumbnails/') . $fileName . "thm" . ".{$ext}";
+                            $model->thmb_photo = $folderPath . ('/thumbnails/') . $fileName . "thm" . ".{$ext}";
                             
-                            // $model->save(false);
+                            $model->save(false);
                         }
                         /* end upload photo */
 
@@ -158,178 +140,62 @@ class OutreachProgrammeController extends Controller
                     }
                 }
                 return $this->redirect('index');
-                
-                // return [
-                //     'forceReload'=>'#crud-datatable-pjax',
-                //     'title'=> "Create new OutreachProgramme",
-                //     'content'=>'<span class="text-success">Create OutreachProgramme success</span>',
-                //     'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-dismiss'=>"modal"]).
-                //             Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
-
-                // ];
-            }else{
-                return [
-                    'title'=> "Create new OutreachProgramme",
-                    'content'=>$this->renderAjax('create', [
-                        'models' => $models,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-
-                ];
-            }
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            if($request->isPost) {
-                foreach ($models as $model) {
-                    if ($model->load($request->post())) {
-                        $model->save();
-                    }
-                }
-                return $this->redirect('index');
-            } else {
-                return $this->render('create', [
-                    'models' => $models,
-                ]);
-            }
+        } else {
+            // $model->loadDefaultValues();
         }
 
+        return $this->render('create', [
+            'models' => $models,
+        ]);
     }
 
     /**
      * Updates an existing OutreachProgramme model.
-     * For ajax request will return json object
-     * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param int $id ID
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
-        $request = Yii::$app->request;
         $model = $this->findModel($id);
 
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
-                return [
-                    'title'=> "Update OutreachProgramme #".$id,
-                    'content'=>$this->renderAjax('update', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];
-            }else if($model->load($request->post()) && $model->save()){
-                return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "OutreachProgramme #".$id,
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];
-            }else{
-                 return [
-                    'title'=> "Update OutreachProgramme #".$id,
-                    'content'=>$this->renderAjax('update', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];
-            }
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
-            }
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Delete an existing OutreachProgramme model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
+     * Deletes an existing OutreachProgramme model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
-        $request = Yii::$app->request;
         $this->findModel($id)->delete();
 
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-
-
-    }
-
-     /**
-     * Delete multiple existing OutreachProgramme model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionBulkdelete()
-    {
-        $request = Yii::$app->request;
-        $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
-        foreach ( $pks as $pk ) {
-            $model = $this->findModel($pk);
-            $model->delete();
-        }
-
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-
+        return $this->redirect(['index']);
     }
 
     /**
      * Finds the OutreachProgramme model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     * @param int $id ID
      * @return OutreachProgramme the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = OutreachProgramme::findOne($id)) !== null) {
+        if (($model = OutreachProgramme::findOne(['id' => $id])) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }
