@@ -11,7 +11,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="outreach-programme-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="p-2 rounded shadow bg-white mb-3">
+        <h1><?= Html::encode($this->title) ?></h1>
+    </div>
 
     <?= $this->render('_formCreate', [
         'models' => $models,

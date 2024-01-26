@@ -12,10 +12,15 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="outreach-programme-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="p-2 rounded shadow bg-white mb-3">
+        <h1><?= Html::encode($this->title) ?></h1>
+    </div>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+    <div class="card">
+        <div class="card-body">
+        <?= $this->render('_form', [
+            'model' => $model,
+        ]) ?>
+        </div>
+    </div>
 </div>
