@@ -21,18 +21,8 @@
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
-.container {
-	//transition: 0.5s;
-}
-
 .navbar > .container {
 	width: 100% !important;
-}
-
-@media screen and (min-width: 1400px) {
-	.container {
-		//width: 1600px;
-	}
 }
 
 
@@ -93,13 +83,9 @@
     top: 15px;
     left: 10px;
 	height: 200px;
-	//padding-left: 20px;
-   // font-size: 36px;
-    //margin-left: 50px;
 }
 
 .sidenav a {
-	//font-size: 16px;
 	color: #fff;
 }
 

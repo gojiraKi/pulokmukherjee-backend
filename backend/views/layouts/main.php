@@ -62,7 +62,7 @@ AppAsset::register($this);
 
 <div class="row">
     <div class="col-lg-2">
-        <div class="side-menu border-end mt-5 h-100">
+        <div id="mySidenav" class="sidenav border-end mt-5 h-100">
             <ul>
                 <li>
                 <a id="about" href="<?= Url::toRoute(['pages/view', 'id' => 'about']) ?>">Overview</a>
