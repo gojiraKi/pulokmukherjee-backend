@@ -18,7 +18,7 @@ class OutreachProgrammeSearch extends OutreachProgramme
     {
         return [
             [['id', 'status'], 'integer'],
-            [['photo', 'thmb_photo', 'caption', 'remark_one', 'remark_two'], 'safe'],
+            [['photo', 'thmb_photo', 'thmb_photo_frnt', 'caption', 'remark_one', 'remark_two'], 'safe'],
         ];
     }
 
@@ -46,6 +46,9 @@ class OutreachProgrammeSearch extends OutreachProgramme
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
         ]);
 
         $this->load($params);
@@ -64,6 +67,7 @@ class OutreachProgrammeSearch extends OutreachProgramme
 
         $query->andFilterWhere(['like', 'photo', $this->photo])
             ->andFilterWhere(['like', 'thmb_photo', $this->thmb_photo])
+            ->andFilterWhere(['like', 'thmb_photo_frnt', $this->thmb_photo])
             ->andFilterWhere(['like', 'caption', $this->caption])
             ->andFilterWhere(['like', 'remark_one', $this->remark_one])
             ->andFilterWhere(['like', 'remark_two', $this->remark_two]);

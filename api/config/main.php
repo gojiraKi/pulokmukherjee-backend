@@ -1,7 +1,7 @@
 <?php
 $params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/../../common/config/params-local.php',
+    // require __DIR__ . '/../../common/config/params.php',
+    // require __DIR__ . '/../../common/config/params-local.php',
     require __DIR__ . '/params.php',
     require __DIR__ . '/params-local.php'
 );
@@ -19,6 +19,13 @@ return [
         // 'request' => [
         //     'csrfParam' => '_csrf-api',
         // ],
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=pulok_mukherjee_db',
+            'username' => 'root',
+            'password' => '12345678',
+            'charset' => 'utf8',
+        ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => false,

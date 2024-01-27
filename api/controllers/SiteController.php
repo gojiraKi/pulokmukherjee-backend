@@ -3,8 +3,10 @@
 namespace api\controllers;
 
 use app\models\Status;
+use app\models\OutreachProgramme;
 use Yii;
 use yii\rest\Controller;
+use yii\data\ActiveDataProvider;
 
 /**
  * Site controller
@@ -23,6 +25,15 @@ class SiteController extends Controller
     //     ];
     // }
 
+    protected function verbs()
+    {
+        return [
+            'index' => ['GET'],
+            'login' => ['POST'],
+            'verify-otp' => ['POST'],
+        ];
+    }
+
     /**
      * Displays homepage.
      *
@@ -34,6 +45,24 @@ class SiteController extends Controller
             'status' => Status::STATUS_OK,
             'message' => 'Hello :)',
             // 'data' => $post
+        ];
+    }
+
+    public function actionOutreachProgramme()
+    {
+        $query = OutreachProgramme::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ]
+        ]);
+
+        return [
+            'status' => Status::STATUS_OK,
+            'message' => 'success',
+            'data' => $dataProvider
         ];
     }
 }

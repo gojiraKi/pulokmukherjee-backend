@@ -17,8 +17,6 @@ use Yii;
  */
 class OutreachProgramme extends \yii\db\ActiveRecord
 {
-    public $imageFile; // for uploading photo
-
     const INACTIVE = 9;
     const ACTIVE = 10;
 
@@ -28,27 +26,6 @@ class OutreachProgramme extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'outreach_programme';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-        return [
-            // [['id', 'photo', 'thmb_photo', 'status'], 'required'],
-            [['id', 'status'], 'integer'],
-            [['photo', 'thmb_photo', 'thmb_photo_frnt', 'caption'], 'string', 'max' => 255],
-            [['remark_one', 'remark_two'], 'string', 'max' => 45],
-            [['id'], 'unique'],
-
-            [['imageFile'], 'safe'],
-            [['imageFile'], 'file', 'extensions' => 'jpg, jpeg, png', 'maxFiles' => 1],
-            [['imageFile'], 'file', 'maxSize' => '262144'],
-
-            ['status', 'default', 'value' => self::ACTIVE],
-            ['status', 'in', 'range' => [self::ACTIVE, self::INACTIVE]],
-        ];
     }
 
     /**
@@ -65,5 +42,17 @@ class OutreachProgramme extends \yii\db\ActiveRecord
             // 'remark_one' => 'Remark One',
             // 'remark_two' => 'Remark Two',
         ];
+    }
+
+    // filter out some fields, best used when you want to inherit the parent implementation
+    // and exclude some sensitive fields.
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        // remove fields
+        unset($fields['thmb_photo'], $fields['status'], $fields['remark_one'], $fields['remark_two']);
+
+        return $fields;
     }
 }

@@ -8,6 +8,7 @@ use app\models\OutreachProgrammeSearch;
 use app\models\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\base\ErrorException;;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
@@ -83,6 +84,9 @@ class OutreachProgrammeController extends Controller
             // }
             $models = Model::createMultiple(OutreachProgramme::class);
             Model::loadMultiple($models, Yii::$app->request->post());
+
+            $transaction = \Yii::$app->db->beginTransaction();
+            try {
                 foreach ($models as $i => $model) {
                     if ($model->load($this->request->post())) {
                         /* upload photo */
@@ -128,18 +132,40 @@ class OutreachProgrammeController extends Controller
                             }
                             FileHelper::createDirectory($save_path);
                             /* save in hdd */
-                            $thumbnail->save($save_path . '/' .  $fileName . "thm" . ".{$ext}", ['quality' => 90]);
+                            $thumbnail->save($save_path . '/' .  $fileName . "_thm" . ".{$ext}", ['quality' => 90]);
                             /* save in db */
-                            $model->thmb_photo = $folderPath . ('/thumbnails/') . $fileName . "thm" . ".{$ext}";
+                            $model->thmb_photo = $folderPath . ('/thumbnails/') . $fileName . "_thm" . ".{$ext}";
+
+                            /* thumbnail frontend*/
+                            $thumbnail = Image::thumbnail($save_photo, $img_size = 300, $img_size = 425);
+                        
+                            FileHelper::createDirectory($save_path);
+                            /* save in hdd */
+                            $thumbnail->save($save_path . '/' .  $fileName . "_thm_frnt" . ".{$ext}", ['quality' => 90]);
+                            /* save in db */
+                            $model->thmb_photo_frnt = $folderPath . ('/thumbnails/') . $fileName . "_thm_frnt" . ".{$ext}";
                             
-                            $model->save(false);
+                            if (! ($flag = $model->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
                         }
                         /* end upload photo */
 
-                        $model->save();
+                        if (! ($flag = $model->save())) {
+                            $transaction->rollBack();
+                            break;
+                        }
                     }
                 }
-                return $this->redirect('index');
+            
+                if ($flag) {
+                    $transaction->commit();
+                    return $this->redirect('index');
+                }
+            } catch (ErrorException $e) {
+                $transaction->rollBack();
+            }
         } else {
             // $model->loadDefaultValues();
         }
