@@ -51,7 +51,13 @@ class OutreachProgramme extends \yii\db\ActiveRecord
         $fields = parent::fields();
 
         // remove fields
-        unset($fields['thmb_photo'], $fields['status'], $fields['remark_one'], $fields['remark_two']);
+        unset(
+            $fields['photo'], 
+            $fields['thmb_photo'], 
+            $fields['status'], 
+            $fields['remark_one'], 
+            $fields['remark_two']
+        );
 
         return $fields;
     }

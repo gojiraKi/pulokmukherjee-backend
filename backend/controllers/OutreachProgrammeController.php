@@ -122,6 +122,10 @@ class OutreachProgrammeController extends Controller
                             
                             // save the path in db column 
                             $model->photo = $folderPath . '/' . $fileName . ".{$ext}";
+
+                            // db path for images API
+                            $imgPath = $_SERVER['HTTP_HOST'] . Yii::getAlias('@front') . '/' . $folderPath;
+                            $model->thmb_photo_frnt = $imgPath . '/' . $fileName . ".{$ext}";
                             
                             /* thumbnail */
                             $thumbnail = Image::thumbnail($save_photo, $img_size = 150, $img_size = 150);
@@ -143,7 +147,6 @@ class OutreachProgrammeController extends Controller
                             /* save in hdd */
                             $thumbnail->save($save_path . '/' .  $fileName . "_thm_frnt" . ".{$ext}", ['quality' => 90]);
                             /* save in db */
-                            $model->thmb_photo_frnt = $folderPath . ('/thumbnails/') . $fileName . "_thm_frnt" . ".{$ext}";
                             
                             if (! ($flag = $model->save(false))) {
                                 $transaction->rollBack();
