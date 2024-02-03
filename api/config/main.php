@@ -65,6 +65,9 @@ return [
             ],
             'enableCsrfCookie' => false,
         ],
+        'response' => [
+            'format' => \yii\web\Response::FORMAT_JSON
+        ],
     ],
     'params' => $params,
 ];

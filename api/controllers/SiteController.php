@@ -50,7 +50,12 @@ class SiteController extends Controller
 
     public function actionOutreachProgramme()
     {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $query = OutreachProgramme::find();
+
+        $query->thmb_photo_frnt = "http://" . $query->thmb_photo_frnt;
+        print_r($query);
+        die('');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
