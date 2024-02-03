@@ -8,7 +8,7 @@ use app\models\OutreachProgrammeSearch;
 use app\models\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\base\ErrorException;;
+use yii\base\ErrorException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
