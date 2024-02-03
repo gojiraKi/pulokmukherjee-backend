@@ -65,4 +65,41 @@ class Publications extends \yii\db\ActiveRecord
             'remark_two' => Yii::t('app', 'Remark Two'),
         ];
     }
+
+    public static function PublicationYears() {
+        return [
+            [
+                'id' => '1',
+                'range' => '1993 - 1996'
+            ],
+            [
+                'id' => '2',
+                'range' => '1997 - 2000'
+            ],
+            [
+                'id' => '3',
+                'range' => '2001 - 2004'
+            ],
+            [
+                'id' => '4',
+                'range' => '2005 - 2008'
+            ],
+            [
+                'id' => '5',
+                'range' => '2009 - 2012'
+            ],
+            [
+                'id' => '6',
+                'range' => '2013 - 2016'
+            ],
+            [
+                'id' => '7',
+                'range' => '2017 - 2020'
+            ],
+            [
+                'id' => '8',
+                'range' => '2021 - 2023'
+            ]
+        ];
+    }
 }

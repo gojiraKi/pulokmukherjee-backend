@@ -22,7 +22,10 @@ AppAsset::register($this);
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    
+    <!-- include summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
@@ -63,7 +66,7 @@ AppAsset::register($this);
 <div class="row">
     <div class="col-lg-2">
         <div id="mySidenav" class="sidenav border-end mt-5 h-100">
-            <ul>
+            <ul class="pl-0">
                 <li>
                 <a id="about" href="<?= Url::toRoute(['pages/view', 'id' => 'about']) ?>">Overview</a>
                 </li>
@@ -73,10 +76,13 @@ AppAsset::register($this);
                 </li>
                 <li class="divider"></li>
                 <li>
-                <a id="mission" href="<?= Url::toRoute(['pages/view', 'id' => 'mission']) ?>">Mission</a>
+                <a id="mission" href="<?= Url::toRoute(['publications/index']) ?>">Publications</a>
                 </li>
                 <li class="divider"></li>
                 <a id="mission" href="<?= Url::toRoute(['outreach-programme/index']) ?>">Outreach Programme</a>
+                </li>
+                <li class="divider"></li>
+                <a id="mission" href="<?= Url::toRoute(['gallery/index']) ?>">Gallery</a>
                 </li>
                 <li class="divider"></li>
             </ul>
@@ -104,6 +110,7 @@ AppAsset::register($this);
 </footer>
 
 <?php $this->endBody() ?>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </body>
 </html>
 <?php $this->endPage();
