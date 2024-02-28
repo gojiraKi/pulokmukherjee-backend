@@ -11,7 +11,7 @@ use yii\captcha\Captcha;
 $this->title = 'Login';
 ?>
 <div class="site-login">
-    <div class="mt-5 col-lg-4 offset-lg-4 border rounded shadow py-4 px-4">
+    <div class="mt-5 col-lg-4 offset-lg-4 border rounded shadow py-4 px-4 bg-white">
         <h1><?= Html::encode($this->title) ?></h1>
 
         <p>Please fill out the following fields to login:</p>
