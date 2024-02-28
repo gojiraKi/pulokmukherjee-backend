@@ -2,29 +2,28 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Gallery;
 
 /**
- * GallerySearch represents the model behind the search form about `app\models\Gallery`.
+ * GallerySearch represents the model behind the search form of `app\models\Gallery`.
  */
 class GallerySearch extends Gallery
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
             [['id'], 'integer'],
-            [['photo', 'photo_thmb', 'photo_frnt', 'caption', 'alt_text', 'remark_one', 'remark_two'], 'safe'],
+            [['photo', 'photo_thmb', 'photo_frnt', 'caption', 'alt_text', 'file_absolute_path', 'remark_one', 'remark_two'], 'safe'],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function scenarios()
     {
@@ -43,6 +42,8 @@ class GallerySearch extends Gallery
     {
         $query = Gallery::find();
 
+        // add conditions that should always apply here
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -55,6 +56,7 @@ class GallerySearch extends Gallery
             return $dataProvider;
         }
 
+        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
         ]);
@@ -64,6 +66,7 @@ class GallerySearch extends Gallery
             ->andFilterWhere(['like', 'photo_frnt', $this->photo_frnt])
             ->andFilterWhere(['like', 'caption', $this->caption])
             ->andFilterWhere(['like', 'alt_text', $this->alt_text])
+            ->andFilterWhere(['like', 'file_absolute_path', $this->file_absolute_path])
             ->andFilterWhere(['like', 'remark_one', $this->remark_one])
             ->andFilterWhere(['like', 'remark_two', $this->remark_two]);
 

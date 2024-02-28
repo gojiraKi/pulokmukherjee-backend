@@ -3,10 +3,6 @@ use yii\helpers\Url;
 
 return [
     [
-        'class' => 'kartik\grid\CheckboxColumn',
-        'width' => '20px',
-    ],
-    [
         'class' => 'kartik\grid\SerialColumn',
         'width' => '30px',
     ],
@@ -16,16 +12,18 @@ return [
     // ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'photo',
+		'attribute'=>'photo',
+		'format' => 'raw',
+		'hAlign' => 'center',
+		'vAlign' => 'center',
+		'value' => function ($model) {
+			return '<div><img class="img-fluid" src="'. Yii::getAlias('@front') . '/' . $model->photo_thmb .'"></div>';
+		}
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'photo_thmb',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'photo_frnt',
-    ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'photo_frnt',
+    // ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'caption',

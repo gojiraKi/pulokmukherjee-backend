@@ -18,6 +18,8 @@ use Yii;
  */
 class Gallery extends \yii\db\ActiveRecord
 {
+    public $imageFiles; // for uploading photo
+
     /**
      * {@inheritdoc}
      */
@@ -32,8 +34,12 @@ class Gallery extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['photo', 'photo_thmb', 'photo_frnt'], 'required'],
+            // [['photo', 'photo_thmb', 'photo_frnt'], 'required'],
             [['photo', 'photo_thmb', 'photo_frnt', 'caption', 'alt_text', 'remark_one', 'remark_two'], 'string', 'max' => 255],
+
+            [['imageFiles'], 'safe'],
+            [['imageFiles'], 'file', 'extensions' => 'jpg, jpeg, png', 'maxFiles' => 10],
+            [['imageFiles'], 'file', 'maxSize' => '20000000'],
         ];
     }
 

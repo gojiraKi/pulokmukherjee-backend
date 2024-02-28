@@ -1,37 +1,39 @@
 <?php
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Gallery */
-/* @var $form yii\widgets\ActiveForm */
+use yii\helpers\Html;
+use yii\bootstrap5\ActiveForm;
+use kartik\file\FileInput;
+
+/** @var yii\web\View $this */
+/** @var app\models\Gallery $model */
+/** @var yii\widgets\ActiveForm $form */
 ?>
 
 <div class="gallery-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => [
+            'enctype' => 'multipart/form-data',
+            'id' => 'gallery-form'
+        ]
+    ]); ?>
 
-    <?= $form->field($model, 'photo')->textInput(['maxlength' => true]) ?>
+    <?php echo FileInput::widget([
+            'model' => $model,
+            'attribute' => 'imageFiles[]',
+            'name' => 'imageFiles[]',
+            'options' => ['multiple' => true],
 
-    <?= $form->field($model, 'photo_thmb')->textInput(['maxlength' => true]) ?>
+            'pluginOptions' => [
+                'allowedFileExtensions' => ['jpg', 'jpeg', 'png'],
+                'showUpload' => false,
+            ],
+    ]);  ?>
 
-    <?= $form->field($model, 'photo_frnt')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'caption')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'alt_text')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'remark_one')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'remark_two')->textInput(['maxlength' => true]) ?>
-
-  
-	<?php if (!Yii::$app->request->isAjax){ ?>
-	  	<div class="form-group">
-	        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-	    </div>
-	<?php } ?>
+    <div class="form-group">
+        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+    </div>
 
     <?php ActiveForm::end(); ?>
-    
+
 </div>
