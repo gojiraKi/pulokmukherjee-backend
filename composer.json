@@ -17,6 +17,7 @@
         "php": ">=7.4.0",
         "yiisoft/yii2": "~2.0.45",
         "yiisoft/yii2-bootstrap4": "~2.0.0",
+        "yiisoft/yii2-bootstrap5": "~2.0.2",
         "kartik-v/yii2-widget-fileinput": "@dev",
 		"kartik-v/yii2-editors": "@dev",
         "johnitvn/yii2-ajaxcrud": "@dev",
@@ -27,7 +28,10 @@
         "phpmailer/phpmailer": "^6.9",
         "kartik-v/yii2-icons": "@dev",
         "yiisoft/yii2-imagine": "^2.3",
-        "kartik-v/yii2-widget-select2": "@dev"
+        "kartik-v/yii2-widget-select2": "@dev",
+        "kartik-v/yii2-widget-datepicker": "@dev",
+        "phpoffice/phpword": "^1.2",
+        "kartik-v/yii2-detail-view": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -40,7 +44,8 @@
         "codeception/module-yii2": "^1.1",
         "codeception/module-filesystem": "^3.0 || ^2.0 || ^1.1",
         "codeception/verify": "^3.0 || ^2.2",
-        "symfony/browser-kit": "^6.0 || >=2.7 <=4.2.4"
+        "symfony/browser-kit": "^6.0 || >=2.7 <=4.2.4",
+        "bizley/migration": "^4.4"
     },
     "autoload-dev": {
         "psr-4": {
