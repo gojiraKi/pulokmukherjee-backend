@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use wbraganca\dynamicform\DynamicFormWidget;
 use kartik\file\FileInput;
 use kartik\icons\FontAwesomeAsset;

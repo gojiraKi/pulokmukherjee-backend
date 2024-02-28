@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'hAlign' => 'center',
                         'vAlign' => 'center',
                         'value' => function ($model) {
-                            $photo = Yii::getAlias('@front') . '/' .$model->thmb_photo;
+                            $photo = Yii::getAlias('@front') . '/' . $model->thmb_photo;
                             return '<div><img class="img-fluid" src="' . $photo .'"></div>';
                         }
                     ],
