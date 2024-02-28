@@ -5,10 +5,10 @@
 
 use backend\assets\AppAsset;
 use common\widgets\Alert;
-use yii\bootstrap4\Breadcrumbs;
-use yii\bootstrap4\Html;
-use yii\bootstrap4\Nav;
-use yii\bootstrap4\NavBar;
+use yii\bootstrap5\Breadcrumbs;
+use yii\bootstrap5\Html;
+use yii\bootstrap5\Nav;
+use yii\bootstrap5\NavBar;
 use yii\helpers\Url;
 
 AppAsset::register($this);
@@ -27,7 +27,7 @@ AppAsset::register($this);
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100 bg-white">
 <?php $this->beginBody() ?>
 
 <header>
@@ -76,7 +76,12 @@ AppAsset::register($this);
                 </li>
                 <li class="divider"></li>
                 <li>
+                <a id="mission" href="<?= Url::toRoute(['recent-highlight/index']) ?>">Recent Highlights</a>
+                </li>
                 <a id="mission" href="<?= Url::toRoute(['publications/index']) ?>">Publications</a>
+                </li>
+                <li class="divider"></li>
+                <a id="mission" href="<?= Url::toRoute(['outreach-activity/index']) ?>">Outreach Activity</a>
                 </li>
                 <li class="divider"></li>
                 <a id="mission" href="<?= Url::toRoute(['outreach-programme/index']) ?>">Outreach Programme</a>
@@ -85,29 +90,32 @@ AppAsset::register($this);
                 <a id="mission" href="<?= Url::toRoute(['gallery/index']) ?>">Gallery</a>
                 </li>
                 <li class="divider"></li>
+                <a id="mission" href="<?= Url::toRoute(['media/index']) ?>">Media</a>
+                </li>
+                <li class="divider"></li>
             </ul>
         </div>
     </div>
     <div class="col-lg-10">
-    <main role="main" class="flex-shrink-0">
-        <div class="container">
-            <?= Breadcrumbs::widget([
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                'options' => ['class' => 'p-2 bg-light border rounded shadow-sm']
-            ]) ?>
-            <?= Alert::widget() ?>
-            <?= $content ?>
-        </div>
-    </main>
+        <main role="main" class="flex-shrink-0">
+            <div class="container">
+                <?= Breadcrumbs::widget([
+                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                    'options' => ['class' => 'p-2 bg-light border rounded shadow-sm']
+                ]) ?>
+                <?= Alert::widget() ?>
+                <?= $content ?>
+            </div>
+        </main>
+
+        <footer class="footer mt-auto py-3 text-muted bg-white">
+            <div class="container">
+                <p class="float-start">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
+                <p class="float-end">Powered by: <a href='https://whitesoul-ds.co.in/' target='_blank'>WhiteSoul</a></p>
+            </div>
+        </footer>
     </div>
 </div>
-
-<footer class="footer mt-auto py-3 text-muted">
-    <div class="container">
-        <p class="float-start">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-        <p class="float-end"><?= Yii::powered() ?></p>
-    </div>
-</footer>
 
 <?php $this->endBody() ?>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
