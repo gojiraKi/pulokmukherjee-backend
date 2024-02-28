@@ -14,7 +14,7 @@ $this->title = Yii::t('app', 'Recent Highlights');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="recent-highlight-index">
-<div class="card">
+    <div class="card">
         <div class="card-header">
             <div class="d-flex">
                 <div class="p-2 flex-grow-1 bd-highlight">
@@ -28,32 +28,42 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="card-body">
         <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            // 'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'title',
-            // 'article:html',
-            'status',
-            'created_on',
-            //'updated_on',
-            //'remark_one',
-            //'remark_two',
-            [
-                'class' => ActionColumn::class,
-                'urlCreator' => function ($action, RecentHighlight $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                // 'id',
+                'title',
+                // 'article:html',
+                [
+                    'attribute' => 'status',
+                    'value' => function ($data) {
+                        $status = [
+                            '8' => 'Draft',
+                            '9' => 'Archived',
+                            '10' => 'Published'
+                        ];
+                        return $status[$data->status];
+                    }
+                ],
+                'created_on',
+                //'updated_on',
+                //'remark_one',
+                //'remark_two',
+                [
+                    'class' => ActionColumn::class,
+                    'urlCreator' => function ($action, RecentHighlight $model, $key, $index, $column) {
+                        return Url::toRoute([$action, 'id' => $model->id]);
+                    }
+                ],
             ],
-        ],
-    ]); ?>
+        ]); ?>
 
-    <?php Pjax::end(); ?>
+        <?php Pjax::end(); ?>
         </div>
     </div>
 </div>

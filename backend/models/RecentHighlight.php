@@ -19,7 +19,7 @@ use Yii;
 class RecentHighlight extends \yii\db\ActiveRecord
 {
     const DRAFT = 8;
-    const ARCHIVE = 9;
+    const ARCHIVED = 9;
     const PUBLISHED = 10;
     /**
      * {@inheritdoc}
@@ -41,7 +41,7 @@ class RecentHighlight extends \yii\db\ActiveRecord
             [['title', 'remark_one', 'remark_two'], 'string', 'max' => 255],
 
             ['status', 'default', 'value' => self::DRAFT],
-            ['status', 'in', 'range' => [self::DRAFT, self::PUBLISHED]]
+            ['status', 'in', 'range' => [self::DRAFT, self::ARCHIVED, self::PUBLISHED]]
         ];
     }
 

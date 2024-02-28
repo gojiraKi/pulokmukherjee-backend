@@ -29,9 +29,35 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]) ?>
             </p>
 
-            <?php echo $model->article ?>
+            <div>
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                        <tr>
+                            <th>Title:</th>
+                            <td><?= $model->title ?></td>
+                        </tr>
+                        <tr>
+                            <th>Status:</th>
+                            <?php
+                                $status = [
+                                    '8' => 'Draft',
+                                    '9' => 'Archived',
+                                    '10' => 'Published'
+                                ];
+                            ?>
+                            <td><?= $status[$model->status] ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <?= DetailView::widget([
+            <div class="card">
+                <div class="card-body">
+                <?php echo $model->article ?>
+                </div>
+            </div>
+
+            <!-- <?php  DetailView::widget([
                 'model' => $model,
                 'attributes' => [
                     'id',
@@ -43,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     // 'remark_one',
                     // 'remark_two',
                 ],
-            ]) ?>
+            ]) ?> -->
         </div>
     </div>
 </div>
