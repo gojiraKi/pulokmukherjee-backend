@@ -1,10 +1,10 @@
 <?php
 
-namespace backend\models;
+namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\About;
+use app\models\About;
 
 /**
  * AboutSearch represents the model behind the search form of `app\models\About`.
@@ -17,8 +17,8 @@ class AboutSearch extends About
     public function rules()
     {
         return [
-            [['id', 'created_by', 'created_on', 'updated_by', 'updated_on', 'created'], 'integer'],
-            [['bio_photo', 'article'], 'safe'],
+            [['id'], 'integer'],
+            [['photo', 'name', 'qualification', 'field_one', 'field_two', 'field_three', 'field_four', 'field_five', 'field_six', 'field_seven', 'article', 'created_on', 'updated_on', 'remark_one', 'remark_two'], 'safe'],
         ];
     }
 
@@ -59,15 +59,23 @@ class AboutSearch extends About
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'created_by' => $this->created_by,
             'created_on' => $this->created_on,
-            'updated_by' => $this->updated_by,
             'updated_on' => $this->updated_on,
-            'created' => $this->created,
         ]);
 
-        $query->andFilterWhere(['like', 'bio_photo', $this->bio_photo])
-            ->andFilterWhere(['like', 'article', $this->article]);
+        $query->andFilterWhere(['like', 'photo', $this->photo])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'qualification', $this->qualification])
+            ->andFilterWhere(['like', 'field_one', $this->field_one])
+            ->andFilterWhere(['like', 'field_two', $this->field_two])
+            ->andFilterWhere(['like', 'field_three', $this->field_three])
+            ->andFilterWhere(['like', 'field_four', $this->field_four])
+            ->andFilterWhere(['like', 'field_five', $this->field_five])
+            ->andFilterWhere(['like', 'field_six', $this->field_six])
+            ->andFilterWhere(['like', 'field_seven', $this->field_seven])
+            ->andFilterWhere(['like', 'article', $this->article])
+            ->andFilterWhere(['like', 'remark_one', $this->remark_one])
+            ->andFilterWhere(['like', 'remark_two', $this->remark_two]);
 
         return $dataProvider;
     }

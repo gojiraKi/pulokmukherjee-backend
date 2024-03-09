@@ -2,8 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use kartik\file\FileInput;
-use kartik\editors\Summernote;
 
 /** @var yii\web\View $this */
 /** @var app\models\About $model */
@@ -14,50 +12,38 @@ use kartik\editors\Summernote;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?php // $form->field($model, 'bio_photo')->textInput(['maxlength' => true]) ?>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card shadow-sm p-2">
-            <?= $form->field($model, "imageFile")->widget(FileInput::class,[
-                //'id' => 'fileImage',
-                'options' => ['accept' => 'image/*', 'id' => 'fileImage'],
-                'pluginOptions'=>[
-                    'initialPreview'=>[
-                        $model->bio_photo,
-                    ],
-                    'initialPreviewAsData' => true,
-                    'allowedFileExtensions'=>['jpg', 'jpeg', 'png'],
-                    'showUpload' => false,
-                    //'showRemove' => false,
-                    'mainClass' => 'input-group-lg',
-                    //'browseClass' => 'btn btn-success',
-                    //'uploadClass' => 'btn btn-info',
-                    'removeClass' => 'btn btn-warning',
-                    'cancelClass' => 'btn btn-success',
-                    'removeIcon' => '<i class="fas fa-trash"></i> ',
-                    //'browseClass' => 'btn btn-primary btn-block',
-                    'browseIcon' => '<i class="fas fa-camera"></i> ',
-                    'browseLabel' =>  'Select Photo',
-                    // 'maxFileSize' => 256
-                ],
-            ])->label(false); ?>
-            </div>
-        
-        </div>
+    <?= $form->field($model, 'photo')->textInput(['maxlength' => true]) ?>
 
-        <div class="col-md-8">
-            <div class="card shadow-sm p-2">
-            <?= $form->field($model, 'article')->widget(Summernote::class, [
-                'options' => ['placeholder' => 'Edit your blog content here...']
-            ])->label(false); ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-            </div>
-            <?php // $form->field($model, 'article')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'qualification')->textInput(['maxlength' => true]) ?>
 
-            <div class="form-group mt-4">
-                <?= Html::submitButton('Save', ['class' => 'btn btn-success col-6 mx-auto float-end']) ?>
-            </div>
-        </div>
+    <?= $form->field($model, 'field_one')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'field_two')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'field_three')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'field_four')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'field_five')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'field_six')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'field_seven')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'article')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'created_on')->textInput() ?>
+
+    <?= $form->field($model, 'updated_on')->textInput() ?>
+
+    <?= $form->field($model, 'remark_one')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'remark_two')->textInput(['maxlength' => true]) ?>
+
+    <div class="form-group">
+        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

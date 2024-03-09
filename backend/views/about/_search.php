@@ -17,23 +17,39 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'bio_photo') ?>
+    <?= $form->field($model, 'photo') ?>
 
-    <?= $form->field($model, 'article') ?>
+    <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'created_by') ?>
+    <?= $form->field($model, 'qualification') ?>
 
-    <?= $form->field($model, 'created_on') ?>
+    <?= $form->field($model, 'field_one') ?>
 
-    <?php // echo $form->field($model, 'updated_by') ?>
+    <?php // echo $form->field($model, 'field_two') ?>
+
+    <?php // echo $form->field($model, 'field_three') ?>
+
+    <?php // echo $form->field($model, 'field_four') ?>
+
+    <?php // echo $form->field($model, 'field_five') ?>
+
+    <?php // echo $form->field($model, 'field_six') ?>
+
+    <?php // echo $form->field($model, 'field_seven') ?>
+
+    <?php // echo $form->field($model, 'article') ?>
+
+    <?php // echo $form->field($model, 'created_on') ?>
 
     <?php // echo $form->field($model, 'updated_on') ?>
 
-    <?php // echo $form->field($model, 'created') ?>
+    <?php // echo $form->field($model, 'remark_one') ?>
+
+    <?php // echo $form->field($model, 'remark_two') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

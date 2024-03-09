@@ -1,15 +1,12 @@
 <?php
 
-namespace backend\controllers;
+namespace app\controllers;
 
-use Yii;
-use backend\models\About;
-use backend\models\AboutSearch;
+use app\models\About;
+use app\models\AboutSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
-use yii\helpers\FileHelper;
 
 /**
  * AboutController implements the CRUD actions for About model.
@@ -25,7 +22,7 @@ class AboutController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::class,
+                    'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -41,14 +38,13 @@ class AboutController extends Controller
      */
     public function actionIndex()
     {
-        // check if about us section is created
-        // only one about us is required so redirecting to view
-        $model = About::findOne(['created' => 1]);
-        if ($model !== null) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+        $searchModel = new AboutSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index');
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
@@ -74,49 +70,7 @@ class AboutController extends Controller
         $model = new About();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                /* upload photo */
-				if ($image = UploadedFile::getInstance($model,'imageFile')) {
-					$name = $image->name;
-					$ext = (explode(".", $name));
-					$ext = end($ext);
-					$fileName = Yii::$app->security->generateRandomString(12);
-
-                    $temp = explode("/", Yii::getAlias('@webroot'));
-                    $length = count($temp);
-
-                    $one = Yii::getAlias('@webroot');
-                    $two = Yii::getAlias('@web');
-                    $three = Yii::getAlias('@yii');
-                    $four = Yii::getAlias('@app');
-
-                    $path = "";
-                    for ($i = 0; $i < $length - 2; $i++) {
-                        $path = $path . $temp[$i] . '/';
-                    }
-					
-					/* required for saving physical file in hard disk */
-					$pathFolder = 'frontend/web/uploads/';
-					$pathDoc = $path . $pathFolder;
-				
-					// create the folder if it doesn't exist else return false if the folder already exist
-					FileHelper::createDirectory($pathDoc);
-					
-					// save the image in storage e.g. hard disk
-					$image->saveAs($pathDoc . $fileName . ".{$ext}");
-					
-					// save the path in db column 
-					// $model->bio_photo = Yii::getAlias('@frontend/') . $pathFolder . $fileName . ".{$ext}";
-					$model->bio_photo = Yii::getAlias('@front') . '/' . $pathFolder . $fileName . ".{$ext}";
-					
-					$model->save(false);
-				}
-				/* end upload photo */
-                $model->created_by = Yii::$app->user->id;
-                date_default_timezone_set('Asia/Kolkata');
-                $model->created_on = time();
-                $model->created = 1;
-                $model->save(false);
+            if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -175,6 +129,6 @@ class AboutController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }

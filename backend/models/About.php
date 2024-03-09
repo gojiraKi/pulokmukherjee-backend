@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models;
+namespace app\models;
 
 use Yii;
 
@@ -8,17 +8,24 @@ use Yii;
  * This is the model class for table "about".
  *
  * @property int $id
- * @property string $bio_photo
- * @property string $article
- * @property int $created_by
- * @property int $created_on
- * @property int|null $updated_by
- * @property int|null $updated_on
- * @property int|null $created
+ * @property string $photo
+ * @property string $name
+ * @property string $qualification
+ * @property string|null $field_one
+ * @property string|null $field_two
+ * @property string|null $field_three
+ * @property string|null $field_four
+ * @property string|null $field_five
+ * @property string|null $field_six
+ * @property string|null $field_seven
+ * @property string|null $article
+ * @property string $created_on
+ * @property string|null $updated_on
+ * @property string|null $remark_one
+ * @property string|null $remark_two
  */
 class About extends \yii\db\ActiveRecord
 {
-    public $imageFile; // for uploading photo
     /**
      * {@inheritdoc}
      */
@@ -33,10 +40,10 @@ class About extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bio_photo', 'article', 'created_by', 'created_on'], 'required'],
+            [['photo', 'name', 'qualification', 'created_on'], 'required'],
             [['article'], 'string'],
-            [['created_by', 'created_on', 'updated_by', 'updated_on', 'created'], 'integer'],
-            [['bio_photo'], 'string', 'max' => 255],
+            [['created_on', 'updated_on'], 'safe'],
+            [['photo', 'name', 'qualification', 'field_one', 'field_two', 'field_three', 'field_four', 'field_five', 'field_six', 'field_seven', 'remark_one', 'remark_two'], 'string', 'max' => 255],
         ];
     }
 
@@ -46,14 +53,22 @@ class About extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'bio_photo' => 'Bio Photo',
-            'article' => 'Article',
-            'created_by' => 'Created By',
-            'created_on' => 'Created On',
-            'updated_by' => 'Updated By',
-            'updated_on' => 'Updated On',
-            'created' => 'Created',
+            'id' => Yii::t('app', 'ID'),
+            'photo' => Yii::t('app', 'Photo'),
+            'name' => Yii::t('app', 'Name'),
+            'qualification' => Yii::t('app', 'Qualification'),
+            'field_one' => Yii::t('app', 'Field One'),
+            'field_two' => Yii::t('app', 'Field Two'),
+            'field_three' => Yii::t('app', 'Field Three'),
+            'field_four' => Yii::t('app', 'Field Four'),
+            'field_five' => Yii::t('app', 'Field Five'),
+            'field_six' => Yii::t('app', 'Field Six'),
+            'field_seven' => Yii::t('app', 'Field Seven'),
+            'article' => Yii::t('app', 'Article'),
+            'created_on' => Yii::t('app', 'Created On'),
+            'updated_on' => Yii::t('app', 'Updated On'),
+            'remark_one' => Yii::t('app', 'Remark One'),
+            'remark_two' => Yii::t('app', 'Remark Two'),
         ];
     }
 }
