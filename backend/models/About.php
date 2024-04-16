@@ -26,6 +26,7 @@ use Yii;
  */
 class About extends \yii\db\ActiveRecord
 {
+    public $file; // for uploading photo
     /**
      * {@inheritdoc}
      */
@@ -43,7 +44,14 @@ class About extends \yii\db\ActiveRecord
             [['photo', 'name', 'qualification', 'created_on'], 'required'],
             [['article'], 'string'],
             [['created_on', 'updated_on'], 'safe'],
-            [['photo', 'name', 'qualification', 'field_one', 'field_two', 'field_three', 'field_four', 'field_five', 'field_six', 'field_seven', 'remark_one', 'remark_two'], 'string', 'max' => 255],
+            [['photo', 'name', 'qualification', 'field_one', 'field_two', 'field_three', 'field_four', 'field_five', 'field_six', 'field_seven', 'email_one', 'email_two', 'remark_one', 'remark_two'], 'string', 'max' => 255],
+
+            [['name', 'qualification', 'field_one', 'field_two', 'field_three', 'field_four', 'field_five', 'field_six', 'field_seven', 'email_one', 'email_two',], 'trim'],
+            [['email_one', 'email_two'], 'email'],
+
+            [['file'], 'safe'],
+            [['file'], 'file', 'extensions' => 'jpg, jpeg, png', 'maxFiles' => 1],
+            [['file'], 'file', 'maxSize' => '262144'],
         ];
     }
 

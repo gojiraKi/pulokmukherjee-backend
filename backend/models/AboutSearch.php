@@ -18,7 +18,7 @@ class AboutSearch extends About
     {
         return [
             [['id'], 'integer'],
-            [['photo', 'name', 'qualification', 'field_one', 'field_two', 'field_three', 'field_four', 'field_five', 'field_six', 'field_seven', 'article', 'created_on', 'updated_on', 'remark_one', 'remark_two'], 'safe'],
+            [['photo', 'name', 'qualification', 'field_one', 'field_two', 'field_three', 'field_four', 'field_five', 'field_six', 'field_seven', 'email_one', 'email_two', 'article', 'created_on', 'updated_on', 'remark_one', 'remark_two'], 'safe'],
         ];
     }
 
@@ -73,6 +73,8 @@ class AboutSearch extends About
             ->andFilterWhere(['like', 'field_five', $this->field_five])
             ->andFilterWhere(['like', 'field_six', $this->field_six])
             ->andFilterWhere(['like', 'field_seven', $this->field_seven])
+            ->andFilterWhere(['like', 'field_seven', $this->email_one])
+            ->andFilterWhere(['like', 'field_seven', $this->email_two])
             ->andFilterWhere(['like', 'article', $this->article])
             ->andFilterWhere(['like', 'remark_one', $this->remark_one])
             ->andFilterWhere(['like', 'remark_two', $this->remark_two]);

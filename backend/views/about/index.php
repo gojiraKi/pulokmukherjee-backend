@@ -15,44 +15,20 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="about-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="card shadow-sm">  
+        <div class="card-header">
+            <div class="d-flex">
+                <div class="p-1 flex-grow-1 bd-highlight">
+                    <h1 class="roboto-medium"><?= Html::encode($this->title) ?></h1>
+                </div>
+                <div class="p-1 bd-highlight align-self-center">
+                    <?= Html::a(Yii::t('app', 'Create About'), ['create'], ['class' => 'btn btn-success']) ?>
+                </div>
+            </div>
+        </div>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create About'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+        <div class="card-body">
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'photo',
-            'name',
-            'qualification',
-            'field_one',
-            //'field_two',
-            //'field_three',
-            //'field_four',
-            //'field_five',
-            //'field_six',
-            //'field_seven',
-            //'article:ntext',
-            //'created_on',
-            //'updated_on',
-            //'remark_one',
-            //'remark_two',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, About $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
-
-
+        </div>
+    </div>
 </div>

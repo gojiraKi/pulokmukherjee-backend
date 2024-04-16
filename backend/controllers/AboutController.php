@@ -1,12 +1,16 @@
 <?php
 
-namespace app\controllers;
+namespace backend\controllers;
 
 use app\models\About;
 use app\models\AboutSearch;
+use app\models\AboutResearchSearch;
+use app\models\LastUpdate;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 
 /**
  * AboutController implements the CRUD actions for About model.
@@ -22,7 +26,7 @@ class AboutController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -32,17 +36,37 @@ class AboutController extends Controller
     }
 
     /**
+     * Update last updated on LastUpdate
+     * 
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        // Update last_updated attribute in LastUpdate
+        $model = LastUpdate::findOne(['id' => 1]);
+        if ($model !== null) {
+            $model->updateAttributes(['last_updated' => date("Y-m-d")]);
+        }
+    }
+
+    /**
      * Lists all About models.
      *
      * @return string
      */
     public function actionIndex()
     {
+        $rowCount = About::find()->count();
+        if($rowCount == 1){
+            $this->redirect(['view', 'id' => 1]);
+        }
+
         $searchModel = new AboutSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            // 'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -55,8 +79,13 @@ class AboutController extends Controller
      */
     public function actionView($id)
     {
+        // About Research Section
+        $searchModel = new AboutResearchSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -70,13 +99,57 @@ class AboutController extends Controller
         $model = new About();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            if ($model->load($this->request->post())) {
+                if ($image = UploadedFile::getInstance($model,"file")) {
+                    $name = $image->name;
+                    $ext = (explode(".", $name));
+                    $ext = end($ext);
+                    $random = \Yii::$app->security->generateRandomString(12);
+                    $fileName = $random;
+                    
+                    $temp = explode("/", \Yii::getAlias('@webroot'));
+                    $length = count($temp);
+
+                    // get the webroot path
+                    $path = "";
+                    for ($i = 0; $i < $length - 1; $i++) {
+                        $path = $path . $temp[$i] . '/';
+                    }
+
+                    // image folder subpath
+                    $folderPath = 'uploads/images/about';
+                    $pathDoc = $path . $folderPath;
+                
+                    // create the folder if it doesn't exist else return false if the folder already exist
+                    FileHelper::createDirectory($pathDoc);
+                    
+                    // save the image in storage e.g. hard disk
+                    $image->saveAs($pathDoc . '/' . $fileName . ".{$ext}");
+
+                    // save the path
+                    $imgPath = $_SERVER['HTTP_HOST'] . \Yii::getAlias('@front') . '/' . $folderPath;
+                    $model->photo = "https://" . $imgPath . '/' . $fileName . ".{$ext}";
+                     
+                    // $model->save(false);
+                }
+                date_default_timezone_set('Asia/Kolkata');
+                $model->created_on = date('Y-m-d H:i:s');
+                
+                $model->save();
+
+                // Update last_updated attribute in LastUpdate
+                $model = LastUpdate::findOne(['id' => 1]);
+                if ($model !== null) {
+                    $model->updateAttributes(['last_updated' => date("Y-m-d")]);
+                }
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
         }
 
+        $this->layout = "main-mce";
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -93,10 +166,54 @@ class AboutController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            if ($image = UploadedFile::getInstance($model,"file")) {
+                $name = $image->name;
+                $ext = (explode(".", $name));
+                $ext = end($ext);
+                $random = \Yii::$app->security->generateRandomString(12);
+                $fileName = $random;
+                
+                $temp = explode("/", \Yii::getAlias('@webroot'));
+                $length = count($temp);
+
+                // get the webroot path
+                $path = "";
+                for ($i = 0; $i < $length - 1; $i++) {
+                    $path = $path . $temp[$i] . '/';
+                }
+
+                // image folder subpath
+                $folderPath = 'uploads/images/about';
+                $pathDoc = $path . $folderPath;
+            
+                // create the folder if it doesn't exist else return false if the folder already exist
+                FileHelper::createDirectory($pathDoc);
+                
+                // save the image in storage e.g. hard disk
+                $image->saveAs($pathDoc . '/' . $fileName . ".{$ext}");
+
+                // save the path
+                $imgPath = $_SERVER['HTTP_HOST'] . \Yii::getAlias('@front') . '/' . $folderPath;
+                $model->photo = "https://" . $imgPath . '/' . $fileName . ".{$ext}";
+                 
+                // $model->save(false);
+            }
+            date_default_timezone_set('Asia/Kolkata');
+            $model->updated_on = date('Y-m-d H:i:s');
+            
+            $model->save();
+
+            // Update last_updated attribute in LastUpdate
+            $model = LastUpdate::findOne(['id' => 1]);
+            if ($model !== null) {
+                $model->updateAttributes(['last_updated' => date("Y-m-d")]);
+            }
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $this->layout = "main-mce";
         return $this->render('update', [
             'model' => $model,
         ]);
@@ -111,9 +228,11 @@ class AboutController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        return $this->goBack();
 
-        return $this->redirect(['index']);
+        // $this->findModel($id)->delete();
+
+        // return $this->redirect(['index']);
     }
 
     /**
@@ -129,6 +248,6 @@ class AboutController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(\Yii::t('app', 'The requested page does not exist.'));
     }
 }
