@@ -12,32 +12,38 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="conference-and-seminar-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
+    <div class="card">
+        <div class="card-header text-success-emphasis bg-success-subtle">
+            <div class="d-flex">
+                <div class="p-1 flex-grow-1 bd-highlight">
+                    <h1 class="roboto-medium mb-0"><?= Html::encode($this->title) ?></h1>
+                </div>
+                <div class="p-1 bd-highlight align-self-center">
+                <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                        'method' => 'post',
+                    ],
+                ]) ?>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                // 'id',
+                'title',
+                'article:html',
+                'status',
+                'created_on',
+                'updated_on',
+                // 'remark_one',
+                // 'remark_two',
             ],
         ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'title',
-            'article:ntext',
-            'status',
-            'created_on',
-            'updated_on',
-            'remark_one',
-            'remark_two',
-        ],
-    ]) ?>
-
+        </div>
+    </div>
 </div>

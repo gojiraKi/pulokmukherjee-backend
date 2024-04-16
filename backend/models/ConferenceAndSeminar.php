@@ -18,6 +18,8 @@ use Yii;
  */
 class ConferenceAndSeminar extends \yii\db\ActiveRecord
 {
+    const INACTIVE = 9;
+    const ACTIVE = 10;
     /**
      * {@inheritdoc}
      */
@@ -37,6 +39,9 @@ class ConferenceAndSeminar extends \yii\db\ActiveRecord
             [['status', 'created_on', 'updated_on'], 'integer'],
             [['title', 'remark_one'], 'string', 'max' => 255],
             [['remark_two'], 'string', 'max' => 225],
+
+            ['status', 'default', 'value' => self::ACTIVE],
+            ['status', 'in', 'range' => [self::ACTIVE, self::INACTIVE]],
         ];
     }
 
