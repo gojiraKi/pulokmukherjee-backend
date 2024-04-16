@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use kartik\editors\Summernote;
 use kartik\icons\FontAwesomeAsset;
+use yii\web\View;
 // use kartik\date\DatePicker;
 use kartik\select2\Select2;
 FontAwesomeAsset::register($this);
@@ -37,21 +38,7 @@ FontAwesomeAsset::register($this);
         </div>
     </div>
     
-    <div style="height: 700px;">
-    <?= $form->field($model, 'article')->widget(Summernote::class, [
-        'enableFullScreen' => true,
-        'options' => ['placeholder' => 'Edit your blog content here...'],
-        'pluginOptions' => [
-            'height' => 600,
-        ],
-        'container' => [
-            'class' => 'kv-editor-container',
-        ],
-    ]); ?>
-    </div>
-    
-
-    <?php // $form->field($model, 'article')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'article')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
@@ -60,3 +47,16 @@ FontAwesomeAsset::register($this);
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+$script = <<< JS
+	$(document).ready(function(){
+		tinymce.init({
+            selector: '#recenthighlight-article',
+            height: 700
+        });
+        
+	});
+JS;
+$this->registerJs($script, View::POS_READY);
+?>

@@ -80,6 +80,7 @@ class RecentHighlightController extends Controller
             $model->loadDefaultValues();
         }
 
+        $this->layout = 'main-mce';
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -104,6 +105,7 @@ class RecentHighlightController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $this->layout = 'main-mce';
         return $this->render('update', [
             'model' => $model,
         ]);
@@ -136,6 +138,6 @@ class RecentHighlightController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(\Yii::t('app', 'The requested page does not exist.'));
     }
 }

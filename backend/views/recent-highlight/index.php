@@ -15,12 +15,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="recent-highlight-index">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header card-header text-success-emphasis bg-success-subtle">
             <div class="d-flex">
-                <div class="p-2 flex-grow-1 bd-highlight">
-                    <h1><?= Html::encode($this->title) ?></h1>
+                <div class="p-1 flex-grow-1 bd-highlight">
+                    <h1 class="roboto-medium mb-0"><?= Html::encode($this->title) ?></h1>
                 </div>
-                <div class="p-2 bd-highlight align-self-center">
+                <div class="p-1 bd-highlight align-self-center">
                     <?= Html::a(Yii::t('app', 'Create Recent Highlight'), ['create'], ['class' => 'btn btn-success']) ?>
                 </div>
             </div>

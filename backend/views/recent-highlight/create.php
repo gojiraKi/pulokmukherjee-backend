@@ -12,8 +12,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="recent-highlight-create">
 
     <div class="card">
-        <div class="card-header">
-            <h1><?= Html::encode($this->title) ?></h1>
+        <div class="card-header text-success-emphasis bg-success-subtle">
+            <h1 class="roboto-medium mb-0"><?= Html::encode($this->title) ?></h1>
         </div>
         <div class="card-body">
         <?= $this->render('_form', [

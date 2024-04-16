@@ -14,11 +14,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="recent-highlight-view">
 
     <div class="card">
-        <div class="card-header">
-        <h1><?= Html::encode($this->title) ?></h1>
-        </div>
-        <div class="card-body">
-            <p>
+        <div class="card-header text-success-emphasis bg-success-subtle">
+            <div class="d-flex">
+                <div class="p-1 flex-grow-1 bd-highlight">
+                    <h1 class="roboto-medium mb-0"><?= Html::encode($this->title) ?></h1>
+                </div>
+                <div class="p-1 bd-highlight align-self-center">
                 <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger',
@@ -27,8 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         'method' => 'post',
                     ],
                 ]) ?>
-            </p>
-
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-body">
             <div>
                 <table class="table table-bordered table-striped">
                     <tbody>
