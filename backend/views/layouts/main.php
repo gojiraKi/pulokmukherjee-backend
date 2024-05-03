@@ -7,8 +7,6 @@ use backend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
-use yii\bootstrap5\Nav;
-use yii\bootstrap5\NavBar;
 use yii\helpers\Url;
 
 AppAsset::register($this);
@@ -23,6 +21,7 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
     
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <!-- include summernote css/js -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     
@@ -30,79 +29,24 @@ AppAsset::register($this);
 <body class="d-flex flex-column h-100 bg-white">
 <?php $this->beginBody() ?>
 
-<header>
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    }     
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
-        'items' => $menuItems,
-    ]);
-    if (Yii::$app->user->isGuest) {
-        echo Html::tag('div',Html::a('Login',['/site/login'],['class' => ['btn btn-link login text-decoration-none']]),['class' => ['d-flex']]);
-    } else {
-        echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout text-decoration-none']
-            )
-            . Html::endForm();
-    }
-    NavBar::end();
-    ?>
-</header>
-
-<div class="row">
+<div class="row g-0">
     <div class="col-lg-2">
-        <div id="mySidenav" class="sidenav border-end mt-5 h-100">
-            <ul class="pl-0">
-                <li>
-                <a id="about" href="<?= Url::toRoute(['pages/view', 'id' => 'about']) ?>">Overview</a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                <a id="about" href="<?= Url::toRoute(['about/index']) ?>">About</a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                <a id="mission" href="<?= Url::toRoute(['recent-highlight/index']) ?>">Recent Highlights</a>
-                </li>
-                <a id="mission" href="<?= Url::toRoute(['publications/index']) ?>">Publications</a>
-                </li>
-                <li class="divider"></li>
-                <a id="mission" href="<?= Url::toRoute(['outreach-activity/index']) ?>">Outreach Activity</a>
-                </li>
-                <li class="divider"></li>
-                <a id="mission" href="<?= Url::toRoute(['outreach-programme/index']) ?>">Outreach Programme</a>
-                </li>
-                <li class="divider"></li>
-                <a id="mission" href="<?= Url::toRoute(['gallery/index']) ?>">Gallery</a>
-                </li>
-                <li class="divider"></li>
-                <a id="mission" href="<?= Url::toRoute(['media/index']) ?>">Media</a>
-                </li>
-                <li class="divider"></li>
-            </ul>
-        </div>
+        <?= $this->render('sidenav') ?>
     </div>
     <div class="col-lg-10">
+        <?= $this->render('headernav') ?>
         <main role="main" class="flex-shrink-0">
             <div class="container">
                 <?= Breadcrumbs::widget([
+                    'homeLink' => [
+                        'label' => '<i class="fa fa-home"></i> ' . Html::encode(Yii::t('yii', 'Home')),
+                        'url' => Url::toRoute(['default/index']),
+                        'encode' => false,
+                    ],
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                     'options' => ['class' => 'p-2 bg-light border rounded shadow-sm']
                 ]) ?>
+
                 <?= Alert::widget() ?>
                 <?= $content ?>
             </div>
@@ -117,7 +61,39 @@ AppAsset::register($this);
     </div>
 </div>
 
+
+
 <?php $this->endBody() ?>
+<?php
+    \yii\bootstrap5\Modal::begin([
+        'headerOptions' => ['id' => 'modalHeader'],
+        'id' => 'modalPL',
+        'size' => 'modal-lg',
+        //keeps from closing modal with esc key or by clicking out of the modal.
+        // user must click cancel or X to close
+        'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE],
+        "footer"=>"",
+    ]);
+    echo "<div id='modalContent'><div style='text-align:center'><img src='" . Url::home() . "img/Spinning_gear.gif'></div></div>";
+    \yii\bootstrap5\Modal::end();
+?>
+
+<script>
+    const dropdown = document.getElementsByClassName("dropdown-btn");
+    let i;
+
+    for (i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            let dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        });
+    }
+</script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </body>
 </html>
