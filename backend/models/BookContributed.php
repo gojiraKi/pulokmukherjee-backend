@@ -17,6 +17,9 @@ use Yii;
  */
 class BookContributed extends \yii\db\ActiveRecord
 {
+    const INACTIVE = 9;
+    const ACTIVE = 10;
+    
     /**
      * {@inheritdoc}
      */
@@ -32,9 +35,12 @@ class BookContributed extends \yii\db\ActiveRecord
     {
         return [
             [['author', 'title', 'created_on'], 'required'],
-            [['created_on', 'updated_on'], 'safe'],
+            [['status', 'created_on', 'updated_on'], 'safe'],
             [['author', 'title', 'remark_one'], 'string', 'max' => 255],
             [['remark_two'], 'string', 'max' => 225],
+
+            ['status', 'default', 'value' => self::ACTIVE],
+            ['status', 'in', 'range' => [self::ACTIVE, self::INACTIVE]],
         ];
     }
 
@@ -47,10 +53,19 @@ class BookContributed extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'author' => Yii::t('app', 'Author'),
             'title' => Yii::t('app', 'Title'),
+            'status' => Yii::t('app', 'Status'),
             'created_on' => Yii::t('app', 'Created On'),
             'updated_on' => Yii::t('app', 'Updated On'),
             'remark_one' => Yii::t('app', 'Remark One'),
             'remark_two' => Yii::t('app', 'Remark Two'),
         ];
+    }
+
+    public static function Status($type) {
+        $status = [
+            self::INACTIVE => "Inactive",
+            self::ACTIVE => "Active"
+        ];
+        return $status[(string) $type];
     }
 }

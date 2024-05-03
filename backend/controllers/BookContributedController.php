@@ -2,11 +2,14 @@
 
 namespace backend\controllers;
 
+use Yii;
 use app\models\BookContributed;
 use app\models\BookContributedSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use \yii\web\Response;
+use yii\helpers\Html;
 
 /**
  * BookContributedController implements the CRUD actions for BookContributed model.
@@ -22,7 +25,7 @@ class BookContributedController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -55,9 +58,22 @@ class BookContributedController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $request = Yii::$app->request;
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                    'title'=> "Gallery #".$id,
+                    'content'=>$this->renderAjax('view', [
+                        'model' => $this->findModel($id),
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"]).
+                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                ];
+        }else{
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        }
     }
 
     /**
@@ -93,13 +109,82 @@ class BookContributedController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        // if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        //     return $this->redirect(['view', 'id' => $model->id]);
+        // }
+
+        // return $this->render('update', [
+        //     'model' => $model,
+        // ]);
+        $temp = $model->load(\Yii::$app->request->post());
+
+        if ($model->load(\Yii::$app->request->post())) {
+            date_default_timezone_set('Asia/Kolkata');
+			$model->updated_on = time();
+            $model->save();
+            // return $this->redirect(['view', 'id' => (string) $model->id]);
+            return $this->renderAjax('view', [
+                'model' => $model,
+            ]);
+        }elseif (\Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form', [
+                'model' => $model
+            ]);
+        } else {
+            return $this->render('_form', [
+                'model' => $model
+            ]);
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        // $request = Yii::$app->request;
+        // $model = $this->findModel($id);
+
+        // if($request->isAjax){
+        //     /*
+        //     *   Process for ajax request
+        //     */
+        //     Yii::$app->response->format = Response::FORMAT_JSON;
+        //     if($request->isGet){
+        //         return [
+        //             'title'=> "Update Gallery #".$id,
+        //             'content'=>$this->renderAjax('update', [
+        //                 'model' => $model,
+        //             ]),
+        //             'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-dismiss'=>"modal"]).
+        //                         Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+        //         ];
+        //     }else if($model->load($request->post()) && $model->save()){
+        //         return [
+        //             'forceReload'=>'#crud-datatable-pjax',
+        //             'title'=> "Gallery #".$id,
+        //             'content'=>$this->renderAjax('view', [
+        //                 'model' => $model,
+        //             ]),
+        //             'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-dismiss'=>"modal"]).
+        //                     Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+        //         ];
+        //     }else{
+        //          return [
+        //             'title'=> "Update Gallery #".$id,
+        //             'content'=>$this->renderAjax('update', [
+        //                 'model' => $model,
+        //             ]),
+        //             'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-dismiss'=>"modal"]).
+        //                         Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+        //         ];
+        //     }
+        // }else{
+        //     /*
+        //     *   Process for non-ajax request
+        //     */
+        //     if ($model->load($request->post()) && $model->save()) {
+        //         return $this->redirect(['view', 'id' => $model->id]);
+        //     } else {
+        //         return $this->render('update', [
+        //             'model' => $model,
+        //         ]);
+        //     }
+        // }
     }
 
     /**
