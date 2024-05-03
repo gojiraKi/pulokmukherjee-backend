@@ -16,6 +16,9 @@ use Yii;
  */
 class AboutResearch extends \yii\db\ActiveRecord
 {
+    const INACTIVE = 9;
+    const ACTIVE = 10;
+
     /**
      * {@inheritdoc}
      */
@@ -32,8 +35,11 @@ class AboutResearch extends \yii\db\ActiveRecord
         return [
             [['title', 'created_on'], 'required'],
             [['title'], 'string'],
-            [['created_on', 'updated_on'], 'safe'],
+            [['status', 'created_on', 'updated_on'], 'safe'],
             [['remark_one', 'remark_two'], 'string', 'max' => 255],
+
+            ['status', 'default', 'value' => self::ACTIVE],
+            ['status', 'in', 'range' => [self::ACTIVE, self::INACTIVE]],
         ];
     }
 
@@ -45,10 +51,19 @@ class AboutResearch extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'title' => Yii::t('app', 'Title'),
+            'status' => Yii::t('app', 'Status'),
             'created_on' => Yii::t('app', 'Created On'),
             'updated_on' => Yii::t('app', 'Updated On'),
             'remark_one' => Yii::t('app', 'Remark One'),
             'remark_two' => Yii::t('app', 'Remark Two'),
         ];
+    }
+
+    public static function Status($type) {
+        $status = [
+            self::INACTIVE => "Inactive",
+            self::ACTIVE => "Active"
+        ];
+        return $status[(string) $type];
     }
 }

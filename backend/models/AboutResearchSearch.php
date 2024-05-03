@@ -17,7 +17,7 @@ class AboutResearchSearch extends AboutResearch
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['id', 'status'], 'integer'],
             [['title', 'created_on', 'updated_on', 'remark_one', 'remark_two'], 'safe'],
         ];
     }
@@ -59,6 +59,7 @@ class AboutResearchSearch extends AboutResearch
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'status' => $this->status,
             'created_on' => $this->created_on,
             'updated_on' => $this->updated_on,
         ]);
