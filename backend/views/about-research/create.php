@@ -13,9 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="about-research-create">
 
     <div class="card">
-        <div class="card-header text-info-emphasis bg-info-subtle">
-            <h2><?= Html::encode($this->title) ?></h2>
-        </div>
         <div class="card-body">
         <?= $this->render('_form', [
             'model' => $model,

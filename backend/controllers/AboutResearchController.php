@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use Yii;
 // use app\models\About;
 use app\models\AboutResearch;
 use app\models\AboutResearchSearch;
@@ -10,6 +11,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
+use \yii\web\Response;
+use yii\helpers\Html;
 
 /**
  * AboutResearchController implements the CRUD actions for AboutResearch model.
@@ -41,13 +44,8 @@ class AboutResearchController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AboutResearchSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        $url = Url::toRoute('about/view') . "?id=1#about-research";      
+        return $this->redirect($url);
     }
 
     /**
@@ -97,38 +95,80 @@ class AboutResearchController extends Controller
     }
 
     public function actionCreate() {
+        $request = Yii::$app->request;
         $model = new AboutResearch();
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
+
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title'=> "Create New About Research Area",
+                    'content'=>$this->renderAjax('create', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"]).
+                                Html::button('Save',['id' => 'submit-btn', 'class'=>'btn btn-primary','type'=>"submit"])
+
+                ];
+            } else if($model->load($request->post())){
                 date_default_timezone_set('Asia/Kolkata');
-                $model->created_on = date('Y-m-d H:i:s');
-                
-                $model->save();
+	            $model->created_on = date('Y-m-d H:i:s');
+                $model->save(false);
+
+                $id = $model->id;
 
                 // Update last_updated attribute in LastUpdate
-                $model = LastUpdate::findOne(['id' => 1]);
-                if ($model !== null) {
-                    $model->updateAttributes(['last_updated' => date("Y-m-d")]);
+                $modelLastUpdated = LastUpdate::findOne(['id' => 1]);
+                if ($modelLastUpdated !== null) {
+                    $modelLastUpdated->updateAttributes(['last_updated' => date("Y-m-d")]);
                 }
+              
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                // return [
+                //     'forceReload'=>'#datatable-pjax',
+                //     'title'=> "Success",
+                //     'content'=>'<span class="text-success">Create Research Area success</span>',
+                //     // 'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-dismiss'=>"modal"]).
+                //     //         Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                //     'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"])
 
-                // Update last_updated attribute in LastUpdate
-                $model = LastUpdate::findOne(['id' => 1]);
-                if ($model !== null) {
-                    $model->updateAttributes(['last_updated' => date("Y-m-d")]);
-                }
-                // return $this->redirect(['about/view', 'id' => 1]);
+                // ];
 
-                $url = Url::toRoute('about/view')."?id=1#about-research";      
-                return $this->redirect($url);
+                return [
+                    // 'forceReload'=>'#datatable-pjax',
+                    'title'=> "New Research Area Created #" . $id,
+                    'content'=>$this->renderAjax('view', [
+                        'model' => $this->findModel($id),
+                    ]),
+                    // 'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"]).
+                    //         Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"])
+                ];
+            }else{
+                return [
+                    'title'=> "Create new Gallery",
+                    'content'=>$this->renderAjax('create', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-dismiss'=>"modal"]).
+                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];
             }
-        } elseif (\Yii::$app->request->isAjax) {
-            return $this->renderAjax('_form', [
-                'model' => $model
-            ]);
-        } else {
-            return $this->render('create', [
-                'model' => $model
-            ]);
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
         }
     }
 
@@ -141,27 +181,69 @@ class AboutResearchController extends Controller
      */
     public function actionUpdate($id)
     {
+        $request = Yii::$app->request;
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post())) {
-            date_default_timezone_set('Asia/Kolkata');
-                $model->updated_on = date('Y-m-d H:i:s');
-                
-                $model->save();
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title'=> "Update About Research Area #" . $model->id,
+                    'content'=>$this->renderAjax('update', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"]).
+                                Html::button('Save',['id' => 'submit-btn', 'class'=>'btn btn-primary','type'=>"submit"])
+
+                ];
+            } else if($model->load($request->post())){
+                date_default_timezone_set('Asia/Kolkata');
+	            $model->updated_on = date('Y-m-d H:i:s');
+                $model->save(false);
+
+                $id = $model->id;
 
                 // Update last_updated attribute in LastUpdate
-                $model = LastUpdate::findOne(['id' => 1]);
-                if ($model !== null) {
-                    $model->updateAttributes(['last_updated' => date("Y-m-d")]);
+                $modelLastUpdated = LastUpdate::findOne(['id' => 1]);
+                if ($modelLastUpdated !== null) {
+                    $modelLastUpdated->updateAttributes(['last_updated' => date("Y-m-d")]);
                 }
-            $url = Url::toRoute('about/view')."?id=1#about-research";      
-            return $this->redirect($url);
-            // return $this->redirect(['view', 'id' => $model->id]);
-        }
+              
+                Yii::$app->response->format = Response::FORMAT_JSON;
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+                return [
+                    'title'=> "Updated About Research Area #" . $id,
+                    'content'=>$this->renderAjax('view', [
+                        'model' => $this->findModel($id),
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"])
+                ];
+            } else {
+                return [
+                    'title'=> "Update About Research Area #" . $model->id,
+                    'content'=>$this->renderAjax('create', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-dismiss'=>"modal"]).
+                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];
+            }
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+        }
     }
 
     /**

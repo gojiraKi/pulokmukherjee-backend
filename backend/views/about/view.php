@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use yii\grid\ActionColumn;
+use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
 /** @var app\models\About $model */
@@ -71,12 +72,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="p-2 bd-highlight align-self-center">
                             <?php // Html::a(Yii::t('app', 'Create About Research'), ['about-research/create'], ['class' => 'showModalButton btn btn-success']) ?>
-                            <?= Html::button(Yii::t('app', 'Create About Research'), ['value' => Url::to(['about-research/create']), 'title' => 'Creating New Research', 'class' => 'showModalButton btn btn-success', 'data-bs-toggle' => "modal", 'data-bs-target' => "#modal"]); ?>
+                            <?= Html::button(Yii::t('app', 'Create About Research'), ['value' => Url::to(['about-research/create']), 'title' => 'Creating New Research', 'class' => 'showModalButton btn btn-success', 'data-bs-toggle' => "modal", 'data-bs-target' => "#modalPL"]); ?>
                         </div>
                     </div>
                 </div>
 
                 <div class="card-body">
+                <?php Pjax::begin([
+                    'id' => 'datatable-pjax'
+                ]); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
@@ -93,11 +97,41 @@ $this->params['breadcrumbs'][] = $this->title;
                             'template' => '{update} {delete}',
                             'urlCreator' => function ($action, AboutResearch $modelAR, $key, $index, $column) {
                                 return Url::toRoute(['about-research/' . $action, 'id' => $modelAR->id]);
-                            }
+                            },
+                             // 'urlCreator' => function ($action, BookContributed $model, $key, $index, $column) {
+                                //     return Url::toRoute(['book-contributed/' .$action, 'id' => $model->id]);
+                                // },
+                            'buttons' => [
+                                'update' => function ($url, $model, $key) {
+                                    return Html::button('Update', [
+                                        'value' => Url::toRoute(['about-research/update', 'id' => $model->id]),
+                                        'title' => "Update Book Contributed, ID: " . $model->id,
+                                        'class' => 'btn btn-outline-primary btn-sm showModalButton',
+                                        'data' => [
+                                            'bs-toggle' => "modal",
+                                            'bs-target' => "#modalPL"
+                                        ]
+                                    ]);
+                                },
+                                'delete' => function ($url, $model, $key) {
+                                    return Html::a('Delete', 
+                                        ['about-research/delete', 'id' => $model->id],
+                                        [
+                                            'title' => "Delete",
+                                            'class' => 'btn btn-outline-danger btn-sm',
+                                            'data' => [
+                                                'pjax' => "0",
+                                                'confirm' => "Are you sure you want to delete this item?",
+                                                'method' => "post"
+                                            ]
+                                        ]);
+                                },
+                            ]
                         ],
                     ],
                 ]); ?>
                 </div>
+                <?php Pjax::end(); ?>
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
+use kartik\select2\Select2;
 
 /** @var yii\web\View $this */
 /** @var app\models\AboutResearch $model */
@@ -12,15 +13,18 @@ use yii\bootstrap5\ActiveForm;
 
     <?php $form = ActiveForm::begin([
         'options' => [
-            'id' => 'create-about-research-form'
+            'id' => 'ajax-form'
         ]
     ]); ?>
 
-    <?= $form->field($model, 'title')->textarea(['rows' => 6]) ?>
+    <?php $temp = \app\models\AboutResearch::getStatus(); ?>
 
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
-    </div>
+    <?= $form->field($model, 'title')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'status')->dropDownList(\app\models\AboutResearch::getStatus(), ['prompt'=>' --Select-- ']) ?>
+
+    <!-- <div class="form-group">
+        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success btn-form']) ?>
+    </div> -->
 
     <?php ActiveForm::end(); ?>
 

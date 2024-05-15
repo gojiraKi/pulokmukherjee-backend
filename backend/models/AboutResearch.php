@@ -59,11 +59,18 @@ class AboutResearch extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function Status($type) {
+    public static function StatusValue($type) {
         $status = [
             self::INACTIVE => "Inactive",
             self::ACTIVE => "Active"
         ];
         return $status[(string) $type];
+    }
+
+    public static function getStatus() {
+        return [
+            self::INACTIVE => "Inactive",
+            self::ACTIVE => "Active"
+        ];
     }
 }
