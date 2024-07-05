@@ -5,12 +5,12 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\ConferenceAndSeminar $model */
 
-$this->title = Yii::t('app', 'Update Conference And Seminar: {name}', [
-    'name' => $model->title,
+$this->title = Yii::t('app', 'Update Conference And Seminar: {id}', [
+    'id' => $model->id,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Conference And Seminars'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+// $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Conference And Seminars'), 'url' => ['index']];
+// $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
+// $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="conference-and-seminar-update">
 
