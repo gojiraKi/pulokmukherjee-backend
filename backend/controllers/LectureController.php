@@ -2,12 +2,15 @@
 
 namespace backend\controllers;
 
+use Yii;
 use app\models\Lecture;
 use app\models\LectureSearch;
 use app\models\LastUpdate;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use \yii\web\Response;
+use yii\helpers\Html;
 
 /**
  * LectureController implements the CRUD actions for Lecture model.
@@ -42,6 +45,8 @@ class LectureController extends Controller
         $searchModel = new LectureSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        // use layout with TinyMCE script link
+        $this->layout = "main-mce";
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -56,9 +61,22 @@ class LectureController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $request = Yii::$app->request;
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                    'title'=> "Lecture #" . $id,
+                    'content'=>$this->renderAjax('view', [
+                        'model' => $this->findModel($id),
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"])
+                    // .Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                ];
+        }else{
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        }
     }
 
     /**
@@ -68,32 +86,71 @@ class LectureController extends Controller
      */
     public function actionCreate()
     {
+        $request = Yii::$app->request;
         $model = new Lecture();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title'=> "Create New Lecture",
+                    'content'=>$this->renderAjax('create', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"]).
+                                Html::button('Save',['id' => 'submit-btn', 'class'=>'btn btn-primary','type'=>"submit"])
+
+                ];
+            } else if($model->load($request->post())){
                 date_default_timezone_set('Asia/Kolkata');
-                $model->created_on = date('Y-m-d H:i:s');
-                
-                $model->save();
+	            $model->created_on = time();
+                $model->save(false);
+
+                $id = $model->id;
 
                 // Update last_updated attribute in LastUpdate
-                $model = LastUpdate::findOne(['id' => 1]);
-                if ($model !== null) {
-                    $model->updateAttributes(['last_updated' => date("Y-m-d")]);
+                $modelLastUpdated = LastUpdate::findOne(['id' => 1]);
+                if ($modelLastUpdated !== null) {
+                    $modelLastUpdated->updateAttributes(['last_updated' => date("Y-m-d")]);
                 }
+              
+                Yii::$app->response->format = Response::FORMAT_JSON;
 
-                return $this->redirect(['view', 'id' => $model->id]);
+                return [
+                    'title'=> "New Lecture Created #" . $id,
+                    'content'=>$this->renderAjax('view', [
+                        'model' => $this->findModel($id),
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"])
+                ];
+            }else{
+                return [
+                    'title'=> "Create new Lecture",
+                    'content'=>$this->renderAjax('create', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"]).
+                                Html::button('Save',['id' => 'submit-btn', 'class'=>'btn btn-primary','type'=>"submit"])
+
+                ];
             }
         } else {
-            $model->loadDefaultValues();
+            /*
+            *   Process for non-ajax request
+            */
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                $model->loadDefaultValues();
+            }
+            
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-
-        // use layout with TinyMCE script link
-        $this->layout = "main-mce";
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -105,28 +162,71 @@ class LectureController extends Controller
      */
     public function actionUpdate($id)
     {
+        $request = Yii::$app->request;
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post())) {
-            date_default_timezone_set('Asia/Kolkata');
-            $model->updated_on = date('Y-m-d H:i:s');
-            
-            $model->save();
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title'=> "Update Lecture ID: " . $model->id,
+                    'content'=>$this->renderAjax('update', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"]).
+                                Html::button('Save',['id' => 'submit-btn', 'class'=>'btn btn-primary','type'=>"submit"])
 
-            // Update last_updated attribute in LastUpdate
-            $model = LastUpdate::findOne(['id' => 1]);
-            if ($model !== null) {
-                $model->updateAttributes(['last_updated' => date("Y-m-d")]);
+                ];
+            } else if($model->load($request->post())){
+                date_default_timezone_set('Asia/Kolkata');
+	            $model->updated_on = time();
+                $model->save(false);
+
+                $id = $model->id;
+
+                // Update last_updated attribute in LastUpdate
+                $modelLastUpdated = LastUpdate::findOne(['id' => 1]);
+                if ($modelLastUpdated !== null) {
+                    $modelLastUpdated->updateAttributes(['last_updated' => date("Y-m-d")]);
+                }
+              
+                Yii::$app->response->format = Response::FORMAT_JSON;
+
+                return [
+                    'title'=> "New Lecture Created #" . $id,
+                    'content'=>$this->renderAjax('view', [
+                        'model' => $this->findModel($id),
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"])
+                ];
+            }else{
+                return [
+                    'title'=> "Create new Lecture",
+                    'content'=>$this->renderAjax('create', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-secondary float-left','data-bs-dismiss'=>"modal"]).
+                                Html::button('Save',['id' => 'submit-btn', 'class'=>'btn btn-primary','type'=>"submit"])
+
+                ];
             }
-
-            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            /*
+            *   Process for non-ajax request
+            */
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                $model->loadDefaultValues();
+            }
+            
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-
-        // use layout with TinyMCE script link
-        $this->layout = "main-mce";
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**

@@ -18,7 +18,7 @@ class LectureSearch extends Lecture
     {
         return [
             [['id', 'lecture_type', 'status', 'created_on', 'updated_on'], 'integer'],
-            [['title', 'article', 'remark_one', 'remark_two'], 'safe'],
+            [['title', 'article', 'content', 'remark_one', 'remark_two'], 'safe'],
         ];
     }
 
@@ -72,6 +72,11 @@ class LectureSearch extends Lecture
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'article', $this->article])
+            ->andFilterWhere([
+                'or',
+                ['like', 'content', $this->title],
+                ['like', 'content', $this->article],
+            ])
             ->andFilterWhere(['like', 'remark_one', $this->remark_one])
             ->andFilterWhere(['like', 'remark_two', $this->remark_two]);
 

@@ -18,25 +18,15 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="row">
+        <div class="col-md-2"><?= $form->field($model, 'lecture_type')->dropDownList(\app\models\Lecture::getLecture(), ['prompt' => ' --Select-- ']) ?></div>
 
-    <?= $form->field($model, 'lecture_type') ?>
+        <div class="col-md-8"><?= $form->field($model, 'content') ?></div>
 
-    <?= $form->field($model, 'title') ?>
-
-    <?= $form->field($model, 'article') ?>
-
-    <?php // echo $form->field($model, 'created_on') ?>
-
-    <?php // echo $form->field($model, 'updated_on') ?>
-
-    <?php // echo $form->field($model, 'remark_one') ?>
-
-    <?php // echo $form->field($model, 'remark_two') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+        <div class="form-group col-md-2">
+            <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+            <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

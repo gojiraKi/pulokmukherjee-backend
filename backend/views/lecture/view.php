@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Lecture $model */
 
-$this->title = $model->title;
+$this->title = "Lecture #" . $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lectures'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="p-1 flex-grow-1 bd-highlight">
                     <h1 class="roboto-medium mb-0"><?= Html::encode($this->title) ?></h1>
                 </div>
-                <div class="p-1 bd-highlight align-self-center">
+                <!-- <div class="p-1 bd-highlight align-self-center">
                 <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger',
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'method' => 'post',
                     ],
                 ]) ?>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="card-body">
@@ -39,13 +39,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'lecture_type',
                     'value' => \app\models\Lecture::LectureType($model->lecture_type)
                 ],
-                'title',
-                'article:html',
                 [
                     'label' => 'Frontend View',
                     'format' => 'raw',
                     'value' => "<strong>" . $model->title . "</strong> " . $model->article
                 ],
+                'title',
+                'article:html',
                 [
                     'attribute' => 'status',
                     'value' => \app\models\Lecture::Status($model->status)

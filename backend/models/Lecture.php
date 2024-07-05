@@ -23,6 +23,8 @@ class Lecture extends \yii\db\ActiveRecord
 
     const INACTIVE = 9;
     const ACTIVE = 10;
+
+    public $content;
     
     /**
      * {@inheritdoc}
@@ -38,9 +40,9 @@ class Lecture extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['lecture_type', 'title', 'article', 'created_on'], 'required'],
+            [['lecture_type', 'title', 'article'], 'required'],
             [['lecture_type', 'status', 'created_on', 'updated_on'], 'integer'],
-            [['article'], 'string'],
+            [['content', 'article'], 'string'],
             [['title', 'remark_one', 'remark_two'], 'string', 'max' => 255],
 
             ['lecture_type', 'in', 'range' => [self::INTERNATIONAL, self::NATIONAL]],
@@ -60,6 +62,7 @@ class Lecture extends \yii\db\ActiveRecord
             'lecture_type' => Yii::t('app', 'Lecture Type'),
             'title' => Yii::t('app', 'Title'),
             'article' => Yii::t('app', 'Article'),
+            'content' => Yii::t('app', 'Content'),
             'status' => Yii::t('app', 'Status'),
             'created_on' => Yii::t('app', 'Created On'),
             'updated_on' => Yii::t('app', 'Updated On'),
@@ -68,7 +71,7 @@ class Lecture extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function LectureType($type) {
+    public static function LectureType($type = null) {
         $lectureType = [
             "1" => "International",
             "2" => "National"
@@ -76,11 +79,25 @@ class Lecture extends \yii\db\ActiveRecord
         return $lectureType[(string) $type];
     }
 
+    public static function getLecture() {
+        return [
+            self::INTERNATIONAL => "International",
+            self::NATIONAL => "National"
+        ];
+    }
+
     public static function Status($type) {
         $status = [
-            "9" => "Inactive",
-            "10" => "Active"
+            self::INACTIVE => "Inactive",
+            self::ACTIVE => "Active"
         ];
         return $status[(string) $type];
+    }
+
+    public static function getStatus() {
+        return [
+            self::INACTIVE => "Inactive",
+            self::ACTIVE => "Active"
+        ];
     }
 }
