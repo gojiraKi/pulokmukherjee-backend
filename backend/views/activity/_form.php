@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap5\ActiveForm;
+use yii\web\View;
 
 /** @var yii\web\View $this */
 /** @var app\models\Activity $model */
@@ -12,22 +13,25 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
-
     <?= $form->field($model, 'article')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'created_on')->textInput() ?>
-
-    <?= $form->field($model, 'updated_on')->textInput() ?>
-
-    <?= $form->field($model, 'remark_one')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'remark_two')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group">
+    <div class="form-group mt-3 d-grid col-6 mx-auto">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+$script = <<< JS
+	$(document).ready(function(){
+		tinymce.init({
+            selector: '#activity-article',
+            height: 700
+        });
+        
+	});
+JS;
+$this->registerJs($script, View::POS_READY);
+?>

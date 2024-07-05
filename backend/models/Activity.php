@@ -32,14 +32,14 @@ class Activity extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'article', 'created_on'], 'required'],
+            // [['id', 'article', 'created_on'], 'required'],
             [['id', 'status', 'created_on', 'updated_on'], 'integer'],
             [['article'], 'string'],
             [['remark_one', 'remark_two'], 'string', 'max' => 255],
             [['id'], 'unique'],
 
-            ['status', 'default', 'value' => self::ACTIVE],
-            ['status', 'in', 'range' => [self::ACTIVE, self::INACTIVE]],
+            // ['status', 'default', 'value' => self::ACTIVE],
+            // ['status', 'in', 'range' => [self::ACTIVE, self::INACTIVE]],
         ];
     }
 
@@ -51,7 +51,7 @@ class Activity extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'article' => Yii::t('app', 'Article'),
-            'status' => Yii::t('app', 'Status'),
+            // 'status' => Yii::t('app', 'Status'),
             'created_on' => Yii::t('app', 'Created On'),
             'updated_on' => Yii::t('app', 'Updated On'),
             'remark_one' => Yii::t('app', 'Remark One'),

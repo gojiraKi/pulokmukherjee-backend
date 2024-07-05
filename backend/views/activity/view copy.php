@@ -8,7 +8,6 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\MemberProfessionalBody;
 use app\models\VisitingScientistUniversityResearchCentre;
-use app\models\MemberScientificProfessionalBody;
 
 /** @var yii\web\View $this */
 /** @var app\models\Activity $model */
@@ -34,32 +33,31 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <div class="card-body">
-            <ul class="nav nav-activity nav-fill" id="myTab" role="tablist">
+            <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity" type="button" role="tab" aria-controls="activity" aria-selected="true">
-                        <h5 class="roboto-medium header-title">Activity<br>profile</h5>
+                        <h5 class="roboto-medium header-title">Activity<br> </h5>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="member-professional-body-tab" data-bs-toggle="tab" data-bs-target="#member-professional-body" type="button" role="tab" aria-controls="member-professional-body" aria-selected="false">
-                        <h5 class="roboto-medium header-title">Member<br>of the<br>following professional bodies</h5>
+                        <h5 class="roboto-medium header-title">Member Professional Body</h5>
                     </button>
                 </li>
 
-                <li class="nav-item" role="presentation">
+                <!-- <li class="nav-item" role="presentation">
                     <button class="nav-link" id="visiting-scientist-university-research-centre-tab" data-bs-toggle="tab" data-bs-target="#visiting-scientist-university-research-centre" type="button" role="tab" aria-controls="visiting-scientist-university-research-centre" aria-selected="false">
-                        <h5 class="roboto-medium header-title">Visiting scientist in<br>international universities<br>and research centre</h5>
+                        <h5 class="roboto-medium header-title">Visiting scientist<br>international university research centre</h5>
                     </button>
                 </li>
 
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="member_scientific_professional_body-tab" data-bs-toggle="tab" data-bs-target="#member_scientific_professional_body" type="button" role="tab" aria-controls="member_scientific_professional_body" aria-selected="false">
-                        <h5 class="roboto-medium header-title">Member<br>of the<br>scientific/professional bodies</h5>
+                        <h5 class="roboto-medium header-title">Member scientific/professional body</h5>
                     </button>
-                </li>
+                </li> -->
             </ul>
-            <!-- <div class="tab-content border border-top-0 rounded-bottom" id="myTabContent"> -->
-            <div class="tab-content mt-2 border rounded" id="myTabContent">
+            <div class="tab-content border border-top-0 rounded-bottom" id="myTabContent">
                 <!-- activity -->
                 <div class="tab-pane fade show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
                     <div class="px-4 pt-4 bd-highlight align-self-center float-end">
@@ -258,13 +256,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id' => 'datatable-pjax'
                         ]); ?>
                         <?= GridView::widget([
-                            'dataProvider' => $dataProviderMemberScientificProfessionalBody,
+                            'dataProvider' => $dataProviderVisitingScientistUniversityResearchCentre,
                             // 'filterModel' => $searchModel,
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
 
                                 // 'id',
-                                // 'title',
+                                'title',
                                 'article:ntext',
                                 'status',
                                 'created_on',
@@ -273,7 +271,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 //'remark_two',
                                 [
                                     'class' => ActionColumn::class,
-                                    'urlCreator' => function ($action, MemberScientificProfessionalBody $model, $key, $index, $column) {
+                                    'urlCreator' => function ($action, VisitingScientistUniversityResearchCentre $model, $key, $index, $column) {
                                         return Url::toRoute([$action, 'id' => $model->id]);
                                     },
                                     'buttons' => [

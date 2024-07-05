@@ -17,7 +17,8 @@ class ActivitySearch extends Activity
     public function rules()
     {
         return [
-            [['id', 'status', 'created_on', 'updated_on'], 'integer'],
+            // [['id', 'status', 'created_on', 'updated_on'], 'integer'],
+            [['id', 'created_on', 'updated_on'], 'integer'],
             [['article', 'remark_one', 'remark_two'], 'safe'],
         ];
     }
@@ -59,7 +60,7 @@ class ActivitySearch extends Activity
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
+            // 'status' => $this->status,
             'created_on' => $this->created_on,
             'updated_on' => $this->updated_on,
         ]);

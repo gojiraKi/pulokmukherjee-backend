@@ -1,12 +1,19 @@
 <?php
 
-namespace app\controllers;
+namespace backend\controllers;
 
+use Yii;
 use app\models\Activity;
 use app\models\ActivitySearch;
+use app\models\MemberProfessionalBodySearch;
+use app\models\VisitingScientistUniversityResearchCentreSearch;
+use app\models\MemberScientificProfessionalBodySearch;
+use app\models\LastUpdate;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+// use \yii\web\Response;
+// use yii\helpers\Html;
 
 /**
  * ActivityController implements the CRUD actions for Activity model.
@@ -38,11 +45,16 @@ class ActivityController extends Controller
      */
     public function actionIndex()
     {
+        $rowCount = Activity::find()->count();
+        if ($rowCount == 1) {
+            $this->redirect(['view', 'id' => 1]);
+        }
+
         $searchModel = new ActivitySearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            // 'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -55,8 +67,20 @@ class ActivityController extends Controller
      */
     public function actionView($id)
     {
+        $searchMemberProfessionalBody = new MemberProfessionalBodySearch();
+        $dataProviderMemberProfessionalBody = $searchMemberProfessionalBody->search($this->request->queryParams);
+
+        $searchVisitingScientistUniversityResearchCentre = new VisitingScientistUniversityResearchCentreSearch();
+        $dataProviderVisitingScientistUniversityResearchCentre = $searchVisitingScientistUniversityResearchCentre->search($this->request->queryParams);
+
+        $searchMemberScientificProfessionalBody = new MemberScientificProfessionalBodySearch();
+        $dataProviderMemberScientificProfessionalBody = $searchMemberScientificProfessionalBody->search($this->request->queryParams);
+        
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProviderMemberProfessionalBody' => $dataProviderMemberProfessionalBody,
+            'dataProviderVisitingScientistUniversityResearchCentre' => $dataProviderVisitingScientistUniversityResearchCentre,
+            'dataProviderMemberScientificProfessionalBody' => $dataProviderMemberScientificProfessionalBody
         ]);
     }
 
@@ -70,13 +94,23 @@ class ActivityController extends Controller
         $model = new Activity();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            if ($model->load($this->request->post())) {
+                date_default_timezone_set('Asia/Kolkata');
+                $model->created_on = time();
+                $model->save(false);
+
+                // Update last_updated attribute in LastUpdate
+                $modelLastUpdated = LastUpdate::findOne(['id' => 1]);
+                if ($modelLastUpdated !== null) {
+                    $modelLastUpdated->updateAttributes(['last_updated' => date("Y-m-d")]);
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
         }
 
+        $this->layout = "main-mce";
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -93,10 +127,20 @@ class ActivityController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            date_default_timezone_set('Asia/Kolkata');
+            $model->updated_on = time();
+            $model->save(false);
+
+            // Update last_updated attribute in LastUpdate
+            $modelLastUpdated = LastUpdate::findOne(['id' => 1]);
+            if ($modelLastUpdated !== null) {
+                $modelLastUpdated->updateAttributes(['last_updated' => date("Y-m-d")]);
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $this->layout = "main-mce";
         return $this->render('update', [
             'model' => $model,
         ]);
