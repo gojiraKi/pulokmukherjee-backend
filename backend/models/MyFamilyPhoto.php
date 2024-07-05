@@ -19,6 +19,7 @@ use Yii;
  */
 class MyFamilyPhoto extends \yii\db\ActiveRecord
 {
+    public $imageFiles;
     /**
      * {@inheritdoc}
      */
@@ -36,6 +37,10 @@ class MyFamilyPhoto extends \yii\db\ActiveRecord
             [['file_path', 'status', 'created_on'], 'required'],
             [['status', 'created_on', 'updated_on'], 'integer'],
             [['file_path', 'url', 'alt', 'remark_one', 'remark_two'], 'string', 'max' => 255],
+
+            [['imageFiles'], 'safe'],
+            [['imageFiles'], 'file', 'extensions'=>'jpg, jpeg, png', 'maxFiles' => 10],
+            [['imageFiles'], 'file', 'maxSize'=>'20000000'],
         ];
     }
 

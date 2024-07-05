@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap5\ActiveForm;
+use kartik\file\FileInput;
 
 /** @var yii\web\View $this */
 /** @var app\models\MyFamilyPhoto $model */
@@ -10,25 +11,26 @@ use yii\widgets\ActiveForm;
 
 <div class="my-family-photo-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => [
+            'enctype' => 'multipart/form-data',
+            'id' => 'family-form'
+        ]
+    ]); ?>
 
-    <?= $form->field($model, 'file_path')->textInput(['maxlength' => true]) ?>
+    <?php echo FileInput::widget([
+            'model' => $model,
+            'attribute' => 'imageFiles[]',
+            'name' => 'imageFiles[]',
+            'options' => ['multiple' => true],
 
-    <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
+            'pluginOptions' => [
+                'allowedFileExtensions' => ['jpg', 'jpeg', 'png'],
+                'showUpload' => false,
+            ],
+    ]);  ?>
 
-    <?= $form->field($model, 'alt')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'created_on')->textInput() ?>
-
-    <?= $form->field($model, 'updated_on')->textInput() ?>
-
-    <?= $form->field($model, 'remark_one')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'remark_two')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group">
+    <div class="form-group mt-3 d-grid col-6 mx-auto">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
