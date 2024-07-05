@@ -1,11 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+    --ibsd-color-one: #e9efeb;
+    --ibsd-color-two: #f1e09b;
+    --ibsd-color-three: #77b127;
+    --ibsd-color-four: #4b723b;
+    --ibsd-color-five: #c2dbbe;
+    --ibsd-color-six: #48765c;
+    --color-heading-white-bg: #283747;
+    --color-blueish-grey: #283747;
+    --color: #273746;
+    --color-brownish: #f2f3f4;
+}
+
+.roboto-thin {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+  
+.roboto-light {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+  
+.roboto-regular {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+  
+.roboto-medium {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+  
+.roboto-bold {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+  
+.roboto-black {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+  
+.roboto-thin-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: italic;
+}
+  
+.roboto-light-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+  
+.roboto-regular-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+  
+.roboto-medium-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+}
+  
+.roboto-bold-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+  
+.roboto-black-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+}
+
+.bg-brownish {
+    background-color: var(--color-brownish);
+}
+
+.font-blueish-grey {
+    color: var(--color-blueish-grey);
+}
+  
+
 body {
-    background-color: #eee;
+    /* background-color: #eee; */
+    /* background-color: #f4f3ef; */
     color: #3c4858;
+    font-family: "Roboto", sans-serif;
     font-weight: 300;
 }
 
 main > .container {
-    padding: 70px 15px 20px;
+    padding: 20px 15px 20px;
 }
 
 .footer {
@@ -113,4 +211,99 @@ a.desc:after {
 	padding: 10px;
 	text-decoration: none;
 	color: #616A6B;
+}
+
+.form-label {
+    font-weight: 500;
+    /* color: var(--color); */
+    color: #9A9A9A;
+    /* padding-bottom: 0.5rem; */
+}
+
+.card-header {
+    font-weight: 700;
+}
+
+.form-control::placeholder {
+	color: rgba(129, 135, 140, 0.75);
+}
+
+.gallery-btn {
+    position: absolute;
+    bottom: 10%;
+    left: 10%;
+}
+
+.breadcrumb {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    list-style: none;
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+}
+
+.breadcrumb-item a {
+    color: #007bff;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.header-title {
+    color: var(--color-blueish-grey);
+}
+
+/* .pjax-grid-bg {
+
+} */
+
+.pjax-loading {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.4) url("../img/loading.gif") no-repeat center center;
+}
+
+.overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    line-height: 200px;
+}
+
+/* for list view */
+.masonary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 4rem;
+}
+
+.masonary-grid > .masonary-grid-listview-summary {
+    grid-column: 1 / -1;
+}
+
+.masonary-grid > .masonary-grid-listview-pager {
+    grid-column: 1 / -1;
+}
+
+.masonary-grid > .masonary-grid-item {
+    margin-bottom: 3rem;;
+}
+/* 
+} */
+
+.nav-activity .nav-link.active {
+    border-bottom: 0.2rem solid #0cccf2;
 }
