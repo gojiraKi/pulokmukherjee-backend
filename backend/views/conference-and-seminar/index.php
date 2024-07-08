@@ -12,7 +12,7 @@ use yii\widgets\Pjax;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = Yii::t('app', 'Conference And Seminars');
-$this->params['breadcrumbs'][] = $this->title;
+// $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="conference-and-seminar-index">
     <div class="card shadow-sm">
@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="card-body">
             <?php Pjax::begin([
                 "timeout" => false,
-                'id' => 'datatable-pjax'
+                'id' => 'conference-and-seminar-form'
             ]); ?>
             <?php // echo $this->render('_search', ['model' => $searchModel]); 
             ?>
