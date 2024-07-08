@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use app\models\Gallery;
 use app\models\GallerySearch;
+use app\models\LastUpdate;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\base\ErrorException;
@@ -13,6 +14,7 @@ use yii\helpers\FileHelper;
 use yii\imagine\Image;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
+use yii\data\ActiveDataProvider;
 
 /**
  * GalleryController implements the CRUD actions for Gallery model.
@@ -38,6 +40,21 @@ class GalleryController extends Controller
     }
 
     /**
+     * Update last updated on LastUpdate
+     * 
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        // Update last_updated attribute in LastUpdate
+        $model = LastUpdate::findOne(['id' => 1]);
+        if ($model !== null) {
+            $model->updateAttributes(['last_updated' => date("Y-m-d")]);
+        }
+    }
+
+    /**
      * Lists all Gallery models.
      *
      * @return string
@@ -47,8 +64,15 @@ class GalleryController extends Controller
         $searchModel = new GallerySearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        // $dataProvider = new ActiveDataProvider([
+        //     'query' => Gallery::find(),
+        //     'pagination' => [
+        //         'pageSize' => 20,
+        //     ],
+        // ]);
+
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            // 'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -109,7 +133,7 @@ class GalleryController extends Controller
                             }
 
                             // image folder subpath
-                            $folderPath = 'uploads/images';
+                            $folderPath = 'uploads/images/gallery';
                             $pathDoc = $path . $folderPath;
                             
                             // image folder subpath
@@ -159,12 +183,18 @@ class GalleryController extends Controller
                                 $transaction->rollBack();
                             }
                         }
-                    }
 
-                    if ($flag) {
-                        $transaction->commit();
-                        // return $this->redirect(['view', 'id' => $model->id]);
-                        return $this->redirect(['index']);
+                        if ($flag) {
+                            $transaction->commit();
+                            // return $this->redirect(['view', 'id' => $model->id]);
+                            
+                            // Update last_updated attribute in LastUpdate
+                            $model = LastUpdate::findOne(['id' => 1]);
+                            if ($model !== null) {
+                                $model->updateAttributes(['last_updated' => date("Y-m-d")]);
+                            }
+                            return $this->redirect(['index']);
+                        }
                     }
                 } catch (ErrorException $e) {
                     $transaction->rollBack();
@@ -215,7 +245,12 @@ class GalleryController extends Controller
      */
     public function actionDelete($id)
     {
+        $tempFilename = $this->findModel($id)->photo_frnt;
         $this->findModel($id)->delete();
+
+        if(file_exists($tempFilename)){
+            unlink($tempFilename);
+        }
 
         return $this->redirect(['index']);
     }
@@ -233,6 +268,6 @@ class GalleryController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(\Yii::t('app', 'The requested page does not exist.'));
     }
 }

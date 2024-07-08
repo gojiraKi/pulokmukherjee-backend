@@ -48,6 +48,8 @@ class OutreachActivitySearch extends OutreachActivity
             'query' => $query,
         ]);
 
+        $query->orderBy(['id' => SORT_DESC]);
+
         $this->load($params);
 
         if (!$this->validate()) {
