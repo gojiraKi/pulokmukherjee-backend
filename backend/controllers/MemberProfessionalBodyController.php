@@ -5,7 +5,7 @@ namespace backend\controllers;
 use Yii;
 use app\models\MemberProfessionalBody;
 use app\models\MemberProfessionalBodySearch;
-use app\models\Activity;
+// use app\models\Activity;
 use app\models\LastUpdate;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -159,8 +159,8 @@ class MemberProfessionalBodyController extends Controller
      */
     public function actionUpdate($id)
     {
-        $request = Yii::$app->request;
         $model = $this->findModel($id);
+        $request = Yii::$app->request;
 
         if($request->isAjax){
             /*

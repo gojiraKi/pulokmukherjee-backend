@@ -17,6 +17,8 @@ use Yii;
  */
 class MemberScientificProfessionalBody extends \yii\db\ActiveRecord
 {
+    const INACTIVE = 9;
+    const ACTIVE = 10;
     /**
      * {@inheritdoc}
      */
@@ -35,6 +37,9 @@ class MemberScientificProfessionalBody extends \yii\db\ActiveRecord
             [['article'], 'string'],
             [['status', 'created_on', 'updated_on'], 'integer'],
             [['remark_one', 'remark_two'], 'string', 'max' => 255],
+
+            ['status', 'default', 'value' => self::ACTIVE],
+            ['status', 'in', 'range' => [self::ACTIVE, self::INACTIVE]],
         ];
     }
 

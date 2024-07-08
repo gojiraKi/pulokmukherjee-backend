@@ -9,13 +9,14 @@ use yii\widgets\Pjax;
 use app\models\MemberProfessionalBody;
 use app\models\VisitingScientistUniversityResearchCentre;
 use app\models\MemberScientificProfessionalBody;
+use yii\web\View;
 
 /** @var yii\web\View $this */
 /** @var app\models\Activity $model */
 
 $this->title = "Activities";
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Activities'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+// $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Activities'), 'url' => ['index']];
+// $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="activity-view">
@@ -97,11 +98,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="px-4 pb-4">
                         <?php Pjax::begin([
                             "timeout" => false,
-                            'id' => 'datatable-pjax'
+                            'id' => 'member-professional-body-form'
                         ]); ?>
                         <?= GridView::widget([
                             'dataProvider' => $dataProviderMemberProfessionalBody,
                             // 'filterModel' => $searchModel,
+                            'pager' => ['class' => \yii\bootstrap5\LinkPager::class],
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
 
@@ -176,11 +178,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="px-4 pb-4">
                         <?php Pjax::begin([
                             "timeout" => false,
-                            'id' => 'datatable-pjax'
+                            'id' => 'visiting-scientist-university-research-centre-form'
                         ]); ?>
                         <?= GridView::widget([
                             'dataProvider' => $dataProviderVisitingScientistUniversityResearchCentre,
                             // 'filterModel' => $searchModel,
+                            'pager' => ['class' => \yii\bootstrap5\LinkPager::class],
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
 
@@ -200,7 +203,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'buttons' => [
                                         'view' => function ($url, $model, $key) {
                                             return Html::button('View', [
-                                                'value' => Url::toRoute(['member-professional-body/view', 'id' => $model->id]),
+                                                'value' => Url::toRoute(['visiting-scientist-university-research-centre/view', 'id' => $model->id]),
                                                 'title' => "Conference and Seminar, ID: " . $model->id,
                                                 'class' => 'btn btn-outline-success btn-sm showModalButton',
                                                 'data' => [
@@ -211,7 +214,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         },
                                         'update' => function ($url, $model, $key) {
                                             return Html::button('Update', [
-                                                'value' => Url::toRoute(['member-professional-body/update', 'id' => $model->id]),
+                                                'value' => Url::toRoute(['visiting-scientist-university-research-centre/update', 'id' => $model->id]),
                                                 'title' => "Update Conference and Seminar, ID: " . $model->id,
                                                 'class' => 'btn btn-outline-primary btn-sm showModalButton',
                                                 // 'onclick' => 'updateForm()',
@@ -224,7 +227,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'delete' => function ($url, $model, $key) {
                                             return Html::a(
                                                 'Delete',
-                                                ['member-professional-body/delete', 'id' => $model->id],
+                                                ['visiting-scientist-university-research-centre/delete', 'id' => $model->id],
                                                 [
                                                     'title' => "Delete",
                                                     'class' => 'btn btn-outline-danger btn-sm',
@@ -249,17 +252,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 <!-- Member of the scientific/professional bodies -->
                 <div class="tab-pane fade" id="member_scientific_professional_body" role="tabpanel" aria-labelledby="member_scientific_professional_body-tab">
                     <div class="pt-4 pe-4 bd-highlight align-self-center float-end">
-                        <?= Html::button(Yii::t('app', 'Create Visiting Scientist'), ['value' => Url::to(['visiting-scientist-university-research-centre/create']), 'class' => 'showModalButton btn btn-success', 'data-bs-toggle' => "modal", 'data-bs-target' => "#modalPL"]); ?>
+                        <?= Html::button(Yii::t('app', 'Create Member/Scientific Professional Body'), ['value' => Url::to(['member-scientific-professional-body/create']), 'class' => 'showModalButton btn btn-success', 'data-bs-toggle' => "modal", 'data-bs-target' => "#modalPL"]); ?>
                     </div>
                     <div class="clearfix"></div>
                     <div class="px-4 pb-4">
                         <?php Pjax::begin([
                             "timeout" => false,
-                            'id' => 'datatable-pjax'
+                            'id' => 'member-scientific-professional-body-form'
                         ]); ?>
                         <?= GridView::widget([
                             'dataProvider' => $dataProviderMemberScientificProfessionalBody,
                             // 'filterModel' => $searchModel,
+                            'pager' => ['class' => \yii\bootstrap5\LinkPager::class],
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
 
@@ -279,7 +283,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'buttons' => [
                                         'view' => function ($url, $model, $key) {
                                             return Html::button('View', [
-                                                'value' => Url::toRoute(['member-professional-body/view', 'id' => $model->id]),
+                                                'value' => Url::toRoute(['member-scientific-professional-body/view', 'id' => $model->id]),
                                                 'title' => "Conference and Seminar, ID: " . $model->id,
                                                 'class' => 'btn btn-outline-success btn-sm showModalButton',
                                                 'data' => [
@@ -290,7 +294,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         },
                                         'update' => function ($url, $model, $key) {
                                             return Html::button('Update', [
-                                                'value' => Url::toRoute(['member-professional-body/update', 'id' => $model->id]),
+                                                'value' => Url::toRoute(['member-scientific-professional-body/update', 'id' => $model->id]),
                                                 'title' => "Update Conference and Seminar, ID: " . $model->id,
                                                 'class' => 'btn btn-outline-primary btn-sm showModalButton',
                                                 // 'onclick' => 'updateForm()',
@@ -303,7 +307,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'delete' => function ($url, $model, $key) {
                                             return Html::a(
                                                 'Delete',
-                                                ['member-professional-body/delete', 'id' => $model->id],
+                                                ['member-scientific-professional-body/delete', 'id' => $model->id],
                                                 [
                                                     'title' => "Delete",
                                                     'class' => 'btn btn-outline-danger btn-sm',
@@ -328,3 +332,25 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+
+<?php
+$script = <<< JS
+    let txt = "";
+    // document.querySelector("#memberprofessionalbody-title").addEventListener("keyup", function(){
+    //     const titleValue = this.value;
+    //     console.log(titleValue);
+    // })
+
+    // function chongu() {
+    //     alert(chongu);
+    // }
+
+    // chongu();
+
+    $(document).on('keyup', '.title_input', function (e) {
+        const titleValue = this.value;
+        console.log(titleValue);
+    });
+JS;
+$this->registerJs($script, View::POS_LOAD);
+?>

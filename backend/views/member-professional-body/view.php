@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="card-header text-success-emphasis bg-success-subtle">
             <div class="d-flex">
                 <div class="p-1 flex-grow-1 bd-highlight">
-                    <h1 class="roboto-medium mb-0"><?= Html::encode($this->title) ?></h1>
+                    <h2 class="roboto-medium mb-0"><?= Html::encode($this->title) ?></h2>
                 </div>
             </div>
         </div>
