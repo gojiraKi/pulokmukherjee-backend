@@ -36,7 +36,7 @@ use kartik\bs5dropdown\Dropdown;
                 'items' => [
                     ['label' => 'Honors and Awards', 'url' => Url::toRoute(['about/index'])],
                     ['label' => 'Government and Industry Projects', 'url' => '#'],
-                    ['label' => 'PhD Projects', 'url' => Url::toRoute(['lecture/index'])],
+                    ['label' => 'PhD Projects', 'url' => Url::toRoute(['phd-project/index'])],
                 ],
             ],
             [

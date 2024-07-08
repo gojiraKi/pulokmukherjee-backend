@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use kartik\file\FileInput;
 
 /* @var $this yii\web\View */
@@ -22,7 +22,7 @@ use kartik\file\FileInput;
                     $model->url,
                 ],
                 'initialPreviewAsData' => true,
-                'allowedFileExtensions'=>['jpg', 'jpeg', 'png'],
+                'allowedFileExtensions'=>['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'],
                 'showUpload' => false,
                 //'showRemove' => false,
                 'mainClass' => 'input-group-lg',

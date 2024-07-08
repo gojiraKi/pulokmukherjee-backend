@@ -7,8 +7,8 @@ use yii\widgets\DetailView;
 /** @var app\models\MemberProfessionalBody $model */
 
 $this->title = "Member of the following professional body #" . $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Member Professional Bodies'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+// $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Member Professional Bodies'), 'url' => ['index']];
+// $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="member-professional-body-view">
