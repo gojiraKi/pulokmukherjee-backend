@@ -19,7 +19,14 @@ $(function () {
                 const modalContent = myModalEl.querySelector("#modalContent");
                 const modalFooter = myModalEl.querySelector('.modal-footer');
 
-                modalContent.innerHTML = response.content;
+                // if (response.content === undefined) {
+                //     alert("chongu");
+                //     return;
+                // }
+                // const resultData = JSON.parse(response);
+                // console.log(response);
+                // modalContent.innerHTML = response.content;
+                $('#modalContent').html(response.content)
                 modalFooter.innerHTML = response.footer;
 
                 // **********************************
@@ -31,10 +38,15 @@ $(function () {
                         event.preventDefault();
     
                         // Serialize form data
-                        const formData = $('#ajax-form').serialize();
-                        const action = $('#ajax-form').attr('action');
-                        console.log("form data: " + formData);
-                        console.log("action: " + action);
+                        // console.log(document.querySelector('#form-name'))
+                        const formName = document.querySelector('#form-name').value;
+                        const formData = jQuery('#ajax-form').serialize();
+                        const action = jQuery('#ajax-form').attr('action');
+
+                        // const formData = $(`#${formName}`).serialize();
+                        // const action = $(`#${formName}`).attr('action');
+                        // console.log("form data: " + formData);
+                        // console.log("action: " + action);
     
                         // refresh modal content
                         modalContent.innerHTML = loading;
@@ -47,14 +59,15 @@ $(function () {
                             data: formData,
                             success: function (response) {
                                 // Handle success response from server
-                                // console.log("response: " + JSON.parse(response));
-                                $.pjax.reload({ container: '#datatable-pjax', timeout: false });
+                                // $.pjax.reload({ container: '#datatable-pjax', timeout: false });
+                                $.pjax.reload({ container: `#${formName}`, timeout: false });
                                 modalContent.innerHTML = response.content;
                                 modalFooter.innerHTML = response.footer;
                             },
                             error: function (xhr, status, error) {
                                 // Handle error response
                                 console.error(xhr.responseText);
+                                modalContent.innerHTML = `<h4>Error! Status: ${xhr.status} | Message: ${xhr.statusText}</h4>`
                             }
                         });
                     });
@@ -63,7 +76,8 @@ $(function () {
                 // **********************************
             },
             error: function (xhr, status, error) { // Callback function to handle error
-                console.log('Error:', error);
+                console.dir(xhr);
+                modalContent.innerHTML = `<h4>Error! Status: ${xhr.status} | Message: ${xhr.statusText}</h4>`
             }
         });
 
