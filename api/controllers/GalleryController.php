@@ -23,10 +23,7 @@ class GalleryController extends Controller
     public function actionIndex()
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        // $models = Status::find()->asArray()->orderBy(['id' => SORT_DESC])->all();
-        $models = Gallery::find()->asArray()->all();
-
-        // $viewPath = "https://" . $_SERVER['HTTP_HOST'] . "/pkmukherjee/api/web/gallery/";
+        $models = Gallery::find()->asArray()->orderBy('id')->all();
 
         $data = [];
         $order = 0;
