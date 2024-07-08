@@ -93,6 +93,9 @@
     color: var(--color-blueish-grey);
 }
   
+.font-color {
+    color: var(--color);
+}
 
 body {
     /* background-color: #eee; */
@@ -216,7 +219,8 @@ a.desc:after {
 .form-label {
     font-weight: 500;
     /* color: var(--color); */
-    color: #9A9A9A;
+    /* color: #9A9A9A; */
+    color: var(--color-blueish-grey);
     /* padding-bottom: 0.5rem; */
 }
 
