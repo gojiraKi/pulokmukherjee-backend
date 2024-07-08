@@ -155,7 +155,8 @@ class SiteController extends Controller
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. You will soon received a verification email to activate your account.');
+            // Yii::$app->session->setFlash('success', 'Thank you for registration. You will soon received a verification email to activate your account.');
+            Yii::$app->session->setFlash('success', 'Thank you for registration. Your account will be activated shortly.');
             return $this->goHome();
         }
 
